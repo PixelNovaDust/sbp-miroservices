@@ -1,34 +1,42 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-SbpApiGatewayApplication<sbp-api-gateway>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.sbp.gateway.SbpApiGatewayApplication",
-            "projectName": "sbp-api-gateway",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-SbpAuthServicesApplication<sbp-auth-services>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.sbp.auth.SbpAuthServicesApplication",
-            "projectName": "sbp-auth-services",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-SbpUserServicesApplication<sbp-user-services>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.sbp.user.SbpUserServicesApplication",
-            "projectName": "sbp-user-services",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Gateway (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-api-gateway",
+      "mainClass": "com.sbp.gateway.SbpApiGatewayApplication",
+      "projectName": "sbp-api-gateway",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev"
+    },
+    {
+      "type": "java",
+      "name": "Auth (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-auth-services",
+      "mainClass": "com.sbp.auth.SbpAuthServicesApplication",
+      "projectName": "sbp-auth-services",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev"
+    },
+    {
+      "type": "java",
+      "name": "Users (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-user-services",
+      "mainClass": "com.sbp.user.SbpUserServicesApplication",
+      "projectName": "sbp-user-services",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "All services (dev)",
+      "configurations": ["Gateway (dev)", "Auth (dev)", "Users (dev)"],
+      "stopAll": true
+    }
+  ]
 }

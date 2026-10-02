@@ -1,12 +1,34 @@
-{"properties": [
-  {
-    "name": "server.port",
-    "type": "java.lang.String",
-    "description": "A description for 'server.port'"
-  },
-  {
-    "name": "server.servlet.context-path",
-    "type": "java.lang.String",
-    "description": "A description for 'server.servlet.context-path'"
-  }
-]}
+{
+  "properties": [
+    {
+      "name": "sbp.gateway.port",
+      "type": "java.lang.Integer",
+      "description": "HTTP port for the API gateway. Overridden by env GATEWAY_PORT.",
+      "defaultValue": 8080
+    },
+    {
+      "name": "sbp.services.auth.url",
+      "type": "java.lang.String",
+      "description": "Base URL of the auth service (Docker or localhost). Overridden by env AUTH_SERVICE_URL.",
+      "defaultValue": "http://localhost:8081"
+    },
+    {
+      "name": "sbp.services.user.url",
+      "type": "java.lang.String",
+      "description": "Base URL of the user service. Overridden by env USER_SERVICE_URL.",
+      "defaultValue": "http://localhost:8082"
+    },
+    {
+      "name": "sbp.internal-api.base-path",
+      "type": "java.lang.String",
+      "description": "Reserved base path for internal gateway APIs.",
+      "defaultValue": "/internal/gateway"
+    },
+    {
+      "name": "server.servlet.context-path",
+      "type": "java.lang.String",
+      "description": "Public API base path for the gateway.",
+      "defaultValue": "/api/v1"
+    }
+  ]
+}

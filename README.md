@@ -1,31 +1,15 @@
-### Folder Structure
+# SBP Microservices
 
+Spring Boot microservices monorepo: API gateway, auth, and user services with **dev** and **prod** profiles.
+
+## Quick start
+
+```bash
+cp env/.env.dev.example env/.env.dev   # first time only
+make db-dev                            # databases only
+make start-dev                         # full stack in Docker
 ```
-sbp-microservices/
-│
-├── sbp-foo-service/
-│   ├── pom.xml
-│   ├── Dockerfile
-│   ├── README.md
-│   └── src/
-│       ├── main/
-│       │   ├── foofoo/com/sbp/foo/
-│       │   │   ├── AuthServiceApplication.java
-│       │   │   ├── config/
-│       │   │   ├── controller/
-│       │   │   ├── service/
-│       │   │   ├── repository/
-│       │   │   ├── domain/
-│       │   │   ├── dto/
-│       │   │   ├── security/
-│       │   │   └── exception/
-│       │   │
-│       │   └── resources/
-│       │       ├── application.yml
-│       │       └── db/
-│       └── test/
-│
-├── docker-compose.yml
-├── README.md
-└── .gitignore
-```
+
+Local development with hot reload: `make db-dev`, then VS Code **Run and Debug → All services (dev)**.
+
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for env variables, API paths, and VS Code setup.

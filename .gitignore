@@ -1,0 +1,49 @@
+# Build
+**/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+.cursor/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+.apt_generated
+.springBeans
+.sts4-cache
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs & debug
+*.log
+debug-*.log
+
+# Environment & secrets (commit only env/*.example templates)
+.env
+.env.*
+!.env.example
+env/.env.*
+!env/.env.dev.example
+!env/.env.prod.example
+
+# Credentials & keys
+**/*.pem
+**/*.key
+**/*.p12
+**/*.jks
+**/credentials.json
+**/secrets/

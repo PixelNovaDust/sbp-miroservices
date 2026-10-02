@@ -1,12 +1,49 @@
-{"properties": [
-  {
-    "name": "server.port",
-    "type": "java.lang.String",
-    "description": "A description for 'server.port'"
-  },
-  {
-    "name": "server.servlet.context-path",
-    "type": "java.lang.String",
-    "description": "A description for 'server.servlet.context-path'"
-  }
-]}
+{
+  "properties": [
+    {
+      "name": "sbp.auth.port",
+      "type": "java.lang.Integer",
+      "description": "HTTP port for the auth service. Overridden by env AUTH_PORT.",
+      "defaultValue": 8081
+    },
+    {
+      "name": "sbp.internal-api.base-path",
+      "type": "java.lang.String",
+      "description": "Reserved base path for internal auth APIs.",
+      "defaultValue": "/internal/auth"
+    },
+    {
+      "name": "sbp.auth.datasource.host",
+      "type": "java.lang.String",
+      "description": "PostgreSQL host. Overridden by env AUTH_DB_HOST.",
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "sbp.auth.datasource.port",
+      "type": "java.lang.Integer",
+      "description": "PostgreSQL port. Overridden by env AUTH_DB_PORT.",
+      "defaultValue": 5432
+    },
+    {
+      "name": "sbp.auth.datasource.name",
+      "type": "java.lang.String",
+      "description": "PostgreSQL database name. Overridden by env AUTH_DB_NAME."
+    },
+    {
+      "name": "sbp.auth.datasource.username",
+      "type": "java.lang.String",
+      "description": "PostgreSQL user. Overridden by env AUTH_DB_USERNAME."
+    },
+    {
+      "name": "sbp.auth.datasource.password",
+      "type": "java.lang.String",
+      "description": "PostgreSQL password. Overridden by env AUTH_DB_PASSWORD."
+    },
+    {
+      "name": "server.servlet.context-path",
+      "type": "java.lang.String",
+      "description": "Public API base path for auth.",
+      "defaultValue": "/api/auth"
+    }
+  ]
+}

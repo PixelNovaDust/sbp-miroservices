@@ -1,0 +1,10 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.autobuild.enabled": true,
+  "java.import.maven.enabled": true,
+  "spring-boot.ls.problem.application-properties.enabled": true,
+  "java.debug.settings.hotCodeReplace": "auto",
+  "terminal.integrated.env.windows": {},
+  "terminal.integrated.env.linux": {},
+  "terminal.integrated.env.osx": {}
+}

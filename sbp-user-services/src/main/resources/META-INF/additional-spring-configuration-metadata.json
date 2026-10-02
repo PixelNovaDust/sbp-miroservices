@@ -1,12 +1,49 @@
-{"properties": [
-  {
-    "name": "server.port",
-    "type": "java.lang.String",
-    "description": "A description for 'server.port'"
-  },
-  {
-    "name": "server.servlet.context-path",
-    "type": "java.lang.String",
-    "description": "A description for 'server.servlet.context-path'"
-  }
-]}
+{
+  "properties": [
+    {
+      "name": "sbp.user.port",
+      "type": "java.lang.Integer",
+      "description": "HTTP port for the user service. Overridden by env USER_PORT.",
+      "defaultValue": 8082
+    },
+    {
+      "name": "sbp.internal-api.base-path",
+      "type": "java.lang.String",
+      "description": "Reserved base path for internal user APIs.",
+      "defaultValue": "/internal/users"
+    },
+    {
+      "name": "sbp.user.datasource.host",
+      "type": "java.lang.String",
+      "description": "PostgreSQL host. Overridden by env USER_DB_HOST.",
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "sbp.user.datasource.port",
+      "type": "java.lang.Integer",
+      "description": "PostgreSQL port. Overridden by env USER_DB_PORT.",
+      "defaultValue": 5432
+    },
+    {
+      "name": "sbp.user.datasource.name",
+      "type": "java.lang.String",
+      "description": "PostgreSQL database name. Overridden by env USER_DB_NAME."
+    },
+    {
+      "name": "sbp.user.datasource.username",
+      "type": "java.lang.String",
+      "description": "PostgreSQL user. Overridden by env USER_DB_USERNAME."
+    },
+    {
+      "name": "sbp.user.datasource.password",
+      "type": "java.lang.String",
+      "description": "PostgreSQL password. Overridden by env USER_DB_PASSWORD."
+    },
+    {
+      "name": "server.servlet.context-path",
+      "type": "java.lang.String",
+      "description": "Public API base path for users.",
+      "defaultValue": "/api/v1/users"
+    }
+  ]
+}
