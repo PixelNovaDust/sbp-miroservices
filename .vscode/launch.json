@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SbpApiGatewayApplication<sbp-api-gateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sbp.gateway.SbpApiGatewayApplication",
+            "projectName": "sbp-api-gateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SbpAuthServicesApplication<sbp-auth-services>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sbp.auth.SbpAuthServicesApplication",
+            "projectName": "sbp-auth-services",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SbpUserServicesApplication<sbp-user-services>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sbp.user.SbpUserServicesApplication",
+            "projectName": "sbp-user-services",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
