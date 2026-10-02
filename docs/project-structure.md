@@ -21,4 +21,4 @@ Each service is a standalone Spring Boot Maven module with:
 - `application-dev.properties` — dev datasource, DevTools
 - `application-prod.properties` — prod datasource, stricter JPA
 - `META-INF/additional-spring-configuration-metadata.json` — IDE property hints
-- `Dockerfile` — multi-stage image build
+- `Dockerfile` — multi-stage image build (uses Maven from the build image; no per-module wrapper)

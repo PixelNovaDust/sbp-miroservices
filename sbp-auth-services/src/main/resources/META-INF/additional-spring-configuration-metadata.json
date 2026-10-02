@@ -1,10 +1,34 @@
 {
   "properties": [
     {
+      "name": "spring.profiles.active",
+      "type": "java.lang.String",
+      "description": "Active Spring profile. Set via env SPRING_PROFILES_ACTIVE.",
+      "defaultValue": "dev"
+    },
+    {
       "name": "sbp.auth.port",
       "type": "java.lang.Integer",
       "description": "HTTP port for the auth service. Overridden by env AUTH_PORT.",
       "defaultValue": 8081
+    },
+    {
+      "name": "server.servlet.context-path",
+      "type": "java.lang.String",
+      "description": "Public API base path for auth.",
+      "defaultValue": "/api/auth"
+    },
+    {
+      "name": "management.endpoints.web.exposure.include",
+      "type": "java.lang.String",
+      "description": "Actuator endpoints exposed over HTTP.",
+      "defaultValue": "health,info,metrics"
+    },
+    {
+      "name": "management.endpoint.health.show-details",
+      "type": "java.lang.String",
+      "description": "Health endpoint detail visibility: never, when-authorized, or always.",
+      "defaultValue": "when-authorized"
     },
     {
       "name": "sbp.internal-api.base-path",
@@ -40,10 +64,32 @@
       "description": "PostgreSQL password. Overridden by env AUTH_DB_PASSWORD."
     },
     {
-      "name": "server.servlet.context-path",
+      "name": "sbp.auth.datasource.timezone",
       "type": "java.lang.String",
-      "description": "Public API base path for auth.",
-      "defaultValue": "/api/auth"
+      "description": "IANA timezone for JDBC TimeZone and Hibernate (use Asia/Kolkata). Overridden by env APP_TIMEZONE.",
+      "defaultValue": "Asia/Kolkata"
+    },
+    {
+      "name": "spring.datasource.url",
+      "type": "java.lang.String",
+      "description": "JDBC URL built from sbp.auth.datasource.* including TimeZone query param."
+    },
+    {
+      "name": "spring.jpa.hibernate.ddl-auto",
+      "type": "java.lang.String",
+      "description": "Hibernate schema mode: update (dev) or validate (prod)."
+    },
+    {
+      "name": "spring.jpa.properties.hibernate.jdbc.time_zone",
+      "type": "java.lang.String",
+      "description": "Hibernate JDBC time zone; mirrors sbp.auth.datasource.timezone.",
+      "defaultValue": "Asia/Kolkata"
+    },
+    {
+      "name": "spring.devtools.restart.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable DevTools restart on classpath changes (dev profile).",
+      "defaultValue": true
     }
   ]
 }

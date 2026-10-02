@@ -9,7 +9,7 @@
       "mainClass": "com.sbp.gateway.SbpApiGatewayApplication",
       "projectName": "sbp-api-gateway",
       "envFile": "${workspaceFolder}/env/.env.dev",
-      "vmArgs": "-Dspring.profiles.active=dev"
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
     },
     {
       "type": "java",
@@ -19,7 +19,7 @@
       "mainClass": "com.sbp.auth.SbpAuthServicesApplication",
       "projectName": "sbp-auth-services",
       "envFile": "${workspaceFolder}/env/.env.dev",
-      "vmArgs": "-Dspring.profiles.active=dev"
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
     },
     {
       "type": "java",
@@ -29,7 +29,7 @@
       "mainClass": "com.sbp.user.SbpUserServicesApplication",
       "projectName": "sbp-user-services",
       "envFile": "${workspaceFolder}/env/.env.dev",
-      "vmArgs": "-Dspring.profiles.active=dev"
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
     }
   ],
   "compounds": [

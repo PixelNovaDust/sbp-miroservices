@@ -30,6 +30,9 @@ Thumbs.db
 
 # Logs & debug
 *.log
+*.err
+*-startup.log
+*-startup.err
 debug-*.log
 
 # Environment & secrets (commit only env/*.example templates)

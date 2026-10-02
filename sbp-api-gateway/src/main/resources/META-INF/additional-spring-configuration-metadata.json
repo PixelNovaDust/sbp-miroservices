@@ -1,15 +1,39 @@
 {
   "properties": [
     {
+      "name": "spring.profiles.active",
+      "type": "java.lang.String",
+      "description": "Active Spring profile. Set via env SPRING_PROFILES_ACTIVE.",
+      "defaultValue": "dev"
+    },
+    {
       "name": "sbp.gateway.port",
       "type": "java.lang.Integer",
       "description": "HTTP port for the API gateway. Overridden by env GATEWAY_PORT.",
       "defaultValue": 8080
     },
     {
+      "name": "server.servlet.context-path",
+      "type": "java.lang.String",
+      "description": "Public API base path for the gateway.",
+      "defaultValue": "/api/v1"
+    },
+    {
+      "name": "management.endpoints.web.exposure.include",
+      "type": "java.lang.String",
+      "description": "Actuator endpoints exposed over HTTP.",
+      "defaultValue": "health,info,metrics"
+    },
+    {
+      "name": "management.endpoint.health.show-details",
+      "type": "java.lang.String",
+      "description": "Health endpoint detail visibility: never, when-authorized, or always.",
+      "defaultValue": "when-authorized"
+    },
+    {
       "name": "sbp.services.auth.url",
       "type": "java.lang.String",
-      "description": "Base URL of the auth service (Docker or localhost). Overridden by env AUTH_SERVICE_URL.",
+      "description": "Base URL of the auth service. Overridden by env AUTH_SERVICE_URL.",
       "defaultValue": "http://localhost:8081"
     },
     {
@@ -25,10 +49,10 @@
       "defaultValue": "/internal/gateway"
     },
     {
-      "name": "server.servlet.context-path",
-      "type": "java.lang.String",
-      "description": "Public API base path for the gateway.",
-      "defaultValue": "/api/v1"
+      "name": "spring.devtools.restart.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable DevTools restart on classpath changes (dev profile).",
+      "defaultValue": true
     }
   ]
 }

@@ -38,6 +38,8 @@ After changing env values, restart running services or debug sessions so Spring 
 
 Spring Boot DevTools restarts the app when classpath changes. Keep **Java › Autobuild: Enabled** (see root `.vscode/settings.json`).
 
+Build and test from the IDE (Extension Pack for Java embeds Maven) or via Docker (`make start-dev`). Per-module Maven Wrapper scripts were removed; Docker builds use the Maven image directly.
+
 ## API paths
 
 | Service | Public base path |
