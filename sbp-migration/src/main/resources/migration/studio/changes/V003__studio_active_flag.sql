@@ -1,0 +1,4 @@
+ALTER TABLE studios
+    ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT TRUE;
+
+CREATE INDEX IF NOT EXISTS idx_studios_active ON studios (active);

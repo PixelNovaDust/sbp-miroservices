@@ -1,10 +1,42 @@
 {
+  "editor.formatOnSave": true,
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[sql]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
+  },
+  "Prettier-SQL.dialect": "postgresql",
+  "Prettier-SQL.SQLFlavourOverride": "postgresql",
+  "SQL-Formatter-VSCode.dialect": "postgresql",
+  "SQL-Formatter-VSCode.SQLFlavourOverride": "postgresql",
+  "sqlFormatter.dialect": "postgresql",
+  "vscode-sql-formatter.dialect": "postgresql",
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.autobuild.enabled": true,
   "java.import.maven.enabled": true,
+  "java.import.maven.wrapper.enabled": true,
+  "java.import.maven.recursive": true,
+  "java.project.importOnFirstTimeStartup": "automatic",
+  "java.errors.incompleteClasspath.severity": "warning",
+  "maven.executable.preferMavenWrapper": true,
   "spring-boot.ls.problem.application-properties.enabled": true,
   "java.debug.settings.hotCodeReplace": "auto",
   "terminal.integrated.env.windows": {},
   "terminal.integrated.env.linux": {},
-  "terminal.integrated.env.osx": {}
+  "terminal.integrated.env.osx": {},
+  "java.debug.settings.onBuildFailureProceed": true,
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
 }

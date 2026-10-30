@@ -1,0 +1,49 @@
+{
+  "properties": [
+    {
+      "name": "spring.profiles.active",
+      "type": "java.lang.String",
+      "description": "Active Spring profile. Set via env SPRING_PROFILES_ACTIVE.",
+      "defaultValue": "dev"
+    },
+    {
+      "name": "sbp.reference.port",
+      "type": "java.lang.Integer",
+      "description": "HTTP port for the reference service. Overridden by env REFERENCE_PORT.",
+      "defaultValue": 8087
+    },
+    {
+      "name": "sbp.reference.datasource.host",
+      "type": "java.lang.String",
+      "description": "PostgreSQL host. Overridden by env REFERENCE_DB_HOST.",
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "sbp.reference.datasource.port",
+      "type": "java.lang.Integer",
+      "description": "PostgreSQL port. Overridden by env REFERENCE_DB_PORT.",
+      "defaultValue": 5437
+    },
+    {
+      "name": "sbp.reference.datasource.name",
+      "type": "java.lang.String",
+      "description": "PostgreSQL database name. Overridden by env REFERENCE_DB_NAME."
+    },
+    {
+      "name": "sbp.reference.datasource.username",
+      "type": "java.lang.String",
+      "description": "PostgreSQL user. Overridden by env REFERENCE_DB_USERNAME."
+    },
+    {
+      "name": "sbp.reference.datasource.password",
+      "type": "java.lang.String",
+      "description": "PostgreSQL password. Overridden by env REFERENCE_DB_PASSWORD."
+    },
+    {
+      "name": "sbp.reference.datasource.timezone",
+      "type": "java.lang.String",
+      "description": "IANA timezone for JDBC and Hibernate.",
+      "defaultValue": "Asia/Kolkata"
+    }
+  ]
+}

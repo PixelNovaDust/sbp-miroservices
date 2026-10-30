@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: studio-001-initial
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V001__initial_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: studio-002-studios
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V002__studios.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true
+  - changeSet:
+      id: studio-003-active-flag
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V003__studio_active_flag.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

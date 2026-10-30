@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: sbp-admin-service
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  cache:
+    type: caffeine
+
+server:
+  port: ${ADMIN_PORT:8083}
+  servlet:
+    context-path: /api/v1/admin
+
+management:
+  server:
+    port: ${ADMIN_MANAGEMENT_PORT:9083}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: false
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    metadata-map:
+      management.port: ${ADMIN_MANAGEMENT_PORT:9083}
+      environment: ${SPRING_PROFILES_ACTIVE:dev}
+
+sbp:
+  monitoring:
+    environment-name: ${SBP_ENV:dev}
+    prometheus-url: ${PROMETHEUS_URL:http://localhost:9090}
+    health-connect-timeout-ms: ${MONITORING_HEALTH_CONNECT_TIMEOUT_MS:2000}
+    health-read-timeout-ms: ${MONITORING_HEALTH_READ_TIMEOUT_MS:3000}
+    cache-ttl-seconds: ${MONITORING_CACHE_TTL_SECONDS:15}
+    trusted-host-suffixes: ${MONITORING_TRUSTED_HOST_SUFFIXES:localhost,127.0.0.1,sbp-auth-service,sbp-user-service,sbp-person-service,sbp-studio-service,sbp-content-service,sbp-api-gateway,sbp-admin-service,sbp-discovery-server}
+    infrastructure: []

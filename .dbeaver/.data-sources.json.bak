@@ -1,0 +1,250 @@
+{
+	"folders": {
+		"SBP Dev": {}
+	},
+	"connections": {
+		"postgres-jdbc-sbp-dev-user": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "SBP User (dev)",
+			"description": "Local dev Postgres (USER) from env/.env.dev",
+			"save-password": true,
+			"folder": "SBP Dev",
+			"configuration": {
+				"host": "localhost",
+				"port": "5433",
+				"database": "sbp_user_dev",
+				"url": "jdbc:postgresql://localhost:5433/sbp_user_dev?user\u003dsbp_user\u0026password\u003d8e2c1a0f5d3b9476",
+				"configurationType": "URL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"properties": {
+					"connectTimeout": "20",
+					"password": "8e2c1a0f5d3b9476",
+					"loginTimeout": "20",
+					"escapeSyntaxCallMode": "callIfNoReturn",
+					"user": "sbp_user"
+				},
+				"provider-properties": {
+					"@dbeaver-chosen-role@": "",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"replace-legacy-timezone": "true",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"@dbeaver-show-non-default-db@": "false"
+				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-sbp-dev-studio": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "SBP Studio (dev)",
+			"description": "Local dev Postgres (STUDIO) from env/.env.dev",
+			"save-password": true,
+			"folder": "SBP Dev",
+			"configuration": {
+				"host": "localhost",
+				"port": "5435",
+				"database": "sbp_studio_dev",
+				"url": "jdbc:postgresql://localhost:5435/sbp_studio_dev?user\u003dsbp_studio\u0026password\u003d5a3f8c2e1d0b9467",
+				"configurationType": "URL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"properties": {
+					"user": "sbp_studio",
+					"loginTimeout": "20",
+					"connectTimeout": "20",
+					"password": "5a3f8c2e1d0b9467"
+				},
+				"provider-properties": {
+					"@dbeaver-chosen-role@": "",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"replace-legacy-timezone": "true",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"@dbeaver-show-non-default-db@": "false"
+				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-sbp-dev-person": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "SBP Person (dev)",
+			"description": "Local dev Postgres (PERSON) from env/.env.dev",
+			"save-password": true,
+			"folder": "SBP Dev",
+			"configuration": {
+				"host": "localhost",
+				"port": "5434",
+				"database": "sbp_person_dev",
+				"url": "jdbc:postgresql://localhost:5434/sbp_person_dev?user\u003dsbp_person\u0026password\u003d1b7d4e9a2c806f35",
+				"configurationType": "URL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"properties": {
+					"user": "sbp_person",
+					"loginTimeout": "20",
+					"connectTimeout": "20",
+					"password": "1b7d4e9a2c806f35"
+				},
+				"provider-properties": {
+					"@dbeaver-chosen-role@": "",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"replace-legacy-timezone": "true",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"@dbeaver-show-non-default-db@": "false"
+				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-sbp-dev-reference": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "SBP Reference (dev)",
+			"description": "Local dev Postgres (REFERENCE) from env/.env.dev",
+			"save-password": true,
+			"folder": "SBP Dev",
+			"configuration": {
+				"host": "localhost",
+				"port": "5437",
+				"database": "sbp_reference_dev",
+				"url": "jdbc:postgresql://localhost:5437/sbp_reference_dev?user\u003dsbp_reference\u0026password\u003d3d8f1a6e2c9b0475",
+				"configurationType": "URL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"properties": {
+					"user": "sbp_reference",
+					"loginTimeout": "20",
+					"connectTimeout": "20",
+					"password": "3d8f1a6e2c9b0475"
+				},
+				"provider-properties": {
+					"@dbeaver-chosen-role@": "",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"replace-legacy-timezone": "true",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"@dbeaver-show-non-default-db@": "false"
+				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-sbp-dev-auth": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "SBP Auth (dev)",
+			"description": "Local dev Postgres (AUTH) from env/.env.dev",
+			"save-password": true,
+			"folder": "SBP Dev",
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "sbp_auth_dev",
+				"url": "jdbc:postgresql://localhost:5432/sbp_auth_dev?user\u003dauth_user\u0026password\u003df4a8c3e21d9b6075",
+				"configurationType": "URL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"properties": {
+					"user": "auth_user",
+					"loginTimeout": "20",
+					"connectTimeout": "20",
+					"password": "f4a8c3e21d9b6075"
+				},
+				"provider-properties": {
+					"@dbeaver-chosen-role@": "",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"replace-legacy-timezone": "true",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"@dbeaver-show-non-default-db@": "false"
+				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-sbp-dev-content": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "SBP Content (dev)",
+			"description": "Local dev Postgres (CONTENT) from env/.env.dev",
+			"save-password": true,
+			"folder": "SBP Dev",
+			"configuration": {
+				"host": "localhost",
+				"port": "5436",
+				"database": "sbp_content_dev",
+				"url": "jdbc:postgresql://localhost:5436/sbp_content_dev?user\u003dsbp_content\u0026password\u003d9c2e7a1f4d8b6035",
+				"configurationType": "URL",
+				"type": "dev",
+				"closeIdleConnection": false,
+				"properties": {
+					"user": "sbp_content",
+					"loginTimeout": "20",
+					"connectTimeout": "20",
+					"password": "9c2e7a1f4d8b6035"
+				},
+				"provider-properties": {
+					"@dbeaver-chosen-role@": "",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"replace-legacy-timezone": "true",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"@dbeaver-show-non-default-db@": "false"
+				},
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"colorDark": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": true,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400,
+			"security": {
+				"permission-restrictions": []
+			}
+		}
+	}
+}

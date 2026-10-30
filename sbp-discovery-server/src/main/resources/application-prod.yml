@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  devtools:
+    restart:
+      enabled: false
+  security:
+    user:
+      name: ${EUREKA_USERNAME:eureka}
+      password: ${EUREKA_PASSWORD}
+
+eureka:
+  instance:
+    hostname: ${EUREKA_HOST:discovery}
+    prefer-ip-address: true

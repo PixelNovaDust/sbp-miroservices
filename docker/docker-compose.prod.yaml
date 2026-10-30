@@ -1,8 +1,21 @@
+# Compose project name (Docker Desktop / CLI: stack "sbp-prod")
+name: sbp-prod
+
 services:
+  sbp-discovery-server:
+    build:
+      context: ..
+      dockerfile: sbp-discovery-server/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DISCOVERY_PORT: ${DISCOVERY_PORT:-8761}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD:-change-me}
+    ports:
+      - ${DISCOVERY_PORT:-8761}:8761
 
   auth-db:
     image: postgres:17
-    container_name: sbp-auth-db-prod
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${AUTH_DB_NAME}
@@ -10,18 +23,17 @@ services:
       POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
       TZ: ${APP_TIMEZONE:-Asia/Kolkata}
     ports:
-      - "${AUTH_DB_PORT}:5432"
+      - ${AUTH_DB_PORT}:5432
     volumes:
       - sbp-auth-db-prod-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${AUTH_DB_USERNAME} -d ${AUTH_DB_NAME}"]
+      test: [CMD-SHELL, "pg_isready -U ${AUTH_DB_USERNAME} -d ${AUTH_DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   user-db:
     image: postgres:17
-    container_name: sbp-user-db-prod
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${USER_DB_NAME}
@@ -29,76 +41,350 @@ services:
       POSTGRES_PASSWORD: ${USER_DB_PASSWORD}
       TZ: ${APP_TIMEZONE:-Asia/Kolkata}
     ports:
-      - "${USER_DB_PORT}:5432"
+      - ${USER_DB_PORT}:5432
     volumes:
       - sbp-user-db-prod-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${USER_DB_USERNAME} -d ${USER_DB_NAME}"]
+      test: [CMD-SHELL, "pg_isready -U ${USER_DB_USERNAME} -d ${USER_DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  sbp-auth-service:
-    build:
-      context: ../sbp-auth-services
-      dockerfile: Dockerfile
-    container_name: sbp-auth-service-prod
+  person-db:
+    image: postgres:17
     restart: unless-stopped
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      POSTGRES_DB: ${PERSON_DB_NAME}
+      POSTGRES_USER: ${PERSON_DB_USERNAME}
+      POSTGRES_PASSWORD: ${PERSON_DB_PASSWORD}
+      TZ: ${APP_TIMEZONE:-Asia/Kolkata}
+    ports:
+      - ${PERSON_DB_PORT}:5432
+    volumes:
+      - sbp-person-db-prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ${PERSON_DB_USERNAME} -d ${PERSON_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  studio-db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${STUDIO_DB_NAME}
+      POSTGRES_USER: ${STUDIO_DB_USERNAME}
+      POSTGRES_PASSWORD: ${STUDIO_DB_PASSWORD}
+      TZ: ${APP_TIMEZONE:-Asia/Kolkata}
+    ports:
+      - ${STUDIO_DB_PORT}:5432
+    volumes:
+      - sbp-studio-db-prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ${STUDIO_DB_USERNAME} -d ${STUDIO_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  content-db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${CONTENT_DB_NAME}
+      POSTGRES_USER: ${CONTENT_DB_USERNAME}
+      POSTGRES_PASSWORD: ${CONTENT_DB_PASSWORD}
+      TZ: ${APP_TIMEZONE:-Asia/Kolkata}
+    ports:
+      - ${CONTENT_DB_PORT}:5432
+    volumes:
+      - sbp-content-db-prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ${CONTENT_DB_USERNAME} -d ${CONTENT_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  reference-db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${REFERENCE_DB_NAME}
+      POSTGRES_USER: ${REFERENCE_DB_USERNAME}
+      POSTGRES_PASSWORD: ${REFERENCE_DB_PASSWORD}
+      TZ: ${APP_TIMEZONE:-Asia/Kolkata}
+    ports:
+      - ${REFERENCE_DB_PORT}:5432
+    volumes:
+      - sbp-reference-db-prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ${REFERENCE_DB_USERNAME} -d ${REFERENCE_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  sbp-migration:
+    build:
+      context: ..
+      dockerfile: sbp-migration/Dockerfile
+    restart: no
+    environment:
       APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
-      AUTH_PORT: 8081
+      LIQUIBASE_CLEAR_CHECKSUMS: ${LIQUIBASE_CLEAR_CHECKSUMS:-}
       AUTH_DB_HOST: auth-db
       AUTH_DB_PORT: 5432
       AUTH_DB_NAME: ${AUTH_DB_NAME}
       AUTH_DB_USERNAME: ${AUTH_DB_USERNAME}
       AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD}
-    ports:
-      - "${AUTH_PORT}:8081"
-    depends_on:
-      auth-db:
-        condition: service_healthy
-
-  sbp-user-service:
-    build:
-      context: ../sbp-user-services
-      dockerfile: Dockerfile
-    container_name: sbp-user-service-prod
-    restart: unless-stopped
-    environment:
-      SPRING_PROFILES_ACTIVE: prod
-      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
-      USER_PORT: 8082
       USER_DB_HOST: user-db
       USER_DB_PORT: 5432
       USER_DB_NAME: ${USER_DB_NAME}
       USER_DB_USERNAME: ${USER_DB_USERNAME}
       USER_DB_PASSWORD: ${USER_DB_PASSWORD}
-    ports:
-      - "${USER_PORT}:8082"
+      PERSON_DB_HOST: person-db
+      PERSON_DB_PORT: 5432
+      PERSON_DB_NAME: ${PERSON_DB_NAME}
+      PERSON_DB_USERNAME: ${PERSON_DB_USERNAME}
+      PERSON_DB_PASSWORD: ${PERSON_DB_PASSWORD}
+      STUDIO_DB_HOST: studio-db
+      STUDIO_DB_PORT: 5432
+      STUDIO_DB_NAME: ${STUDIO_DB_NAME}
+      STUDIO_DB_USERNAME: ${STUDIO_DB_USERNAME}
+      STUDIO_DB_PASSWORD: ${STUDIO_DB_PASSWORD}
+      CONTENT_DB_HOST: content-db
+      CONTENT_DB_PORT: 5432
+      CONTENT_DB_NAME: ${CONTENT_DB_NAME}
+      CONTENT_DB_USERNAME: ${CONTENT_DB_USERNAME}
+      CONTENT_DB_PASSWORD: ${CONTENT_DB_PASSWORD}
+      REFERENCE_DB_HOST: reference-db
+      REFERENCE_DB_PORT: 5432
+      REFERENCE_DB_NAME: ${REFERENCE_DB_NAME}
+      REFERENCE_DB_USERNAME: ${REFERENCE_DB_USERNAME}
+      REFERENCE_DB_PASSWORD: ${REFERENCE_DB_PASSWORD}
     depends_on:
+      auth-db:
+        condition: service_healthy
       user-db:
         condition: service_healthy
+      person-db:
+        condition: service_healthy
+      studio-db:
+        condition: service_healthy
+      content-db:
+        condition: service_healthy
+      reference-db:
+        condition: service_healthy
 
-  sbp-api-gateway:
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/prometheus-prod.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - ${PROMETHEUS_PORT:-9090}:9090
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - ${GRAFANA_PORT:-3000}:3000
+    depends_on:
+      - prometheus
+
+  sbp-auth-service:
     build:
-      context: ../sbp-api-gateway
-      dockerfile: Dockerfile
-    container_name: sbp-api-gateway-prod
+      context: ..
+      dockerfile: sbp-auth-services/Dockerfile
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      GATEWAY_PORT: 8080
-      AUTH_SERVICE_URL: http://sbp-auth-service:8081
-      USER_SERVICE_URL: http://sbp-user-service:8082
-    ports:
-      - "${GATEWAY_PORT}:8080"
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-auth-service
+      AUTH_PORT: ${AUTH_PORT:-8081}
+      AUTH_MANAGEMENT_PORT: ${AUTH_MANAGEMENT_PORT:-9081}
+      AUTH_DB_HOST: auth-db
+      AUTH_DB_PORT: 5432
+      AUTH_DB_NAME: ${AUTH_DB_NAME}
+      AUTH_DB_USERNAME: ${AUTH_DB_USERNAME}
+      AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD}
     depends_on:
+      auth-db:
+        condition: service_healthy
+      sbp-migration:
+        condition: service_completed_successfully
+      sbp-discovery-server:
+        condition: service_started
+
+  sbp-user-service:
+    build:
+      context: ..
+      dockerfile: sbp-user-services/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-user-service
+      USER_PORT: ${USER_PORT:-8082}
+      USER_MANAGEMENT_PORT: ${USER_MANAGEMENT_PORT:-9082}
+      USER_DB_HOST: user-db
+      USER_DB_PORT: 5432
+      USER_DB_NAME: ${USER_DB_NAME}
+      USER_DB_USERNAME: ${USER_DB_USERNAME}
+      USER_DB_PASSWORD: ${USER_DB_PASSWORD}
+    depends_on:
+      user-db:
+        condition: service_healthy
+      sbp-migration:
+        condition: service_completed_successfully
+      sbp-discovery-server:
+        condition: service_started
+
+  sbp-person-service:
+    build:
+      context: ..
+      dockerfile: sbp-person-service/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-person-service
+      PERSON_PORT: ${PERSON_PORT:-8084}
+      PERSON_MANAGEMENT_PORT: ${PERSON_MANAGEMENT_PORT:-9084}
+      PERSON_DB_HOST: person-db
+      PERSON_DB_PORT: 5432
+      PERSON_DB_NAME: ${PERSON_DB_NAME}
+      PERSON_DB_USERNAME: ${PERSON_DB_USERNAME}
+      PERSON_DB_PASSWORD: ${PERSON_DB_PASSWORD}
+    depends_on:
+      person-db:
+        condition: service_healthy
+      sbp-migration:
+        condition: service_completed_successfully
+      sbp-discovery-server:
+        condition: service_started
+
+  sbp-studio-service:
+    build:
+      context: ..
+      dockerfile: sbp-studio-service/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-studio-service
+      STUDIO_PORT: ${STUDIO_PORT:-8085}
+      STUDIO_MANAGEMENT_PORT: ${STUDIO_MANAGEMENT_PORT:-9085}
+      STUDIO_DB_HOST: studio-db
+      STUDIO_DB_PORT: 5432
+      STUDIO_DB_NAME: ${STUDIO_DB_NAME}
+      STUDIO_DB_USERNAME: ${STUDIO_DB_USERNAME}
+      STUDIO_DB_PASSWORD: ${STUDIO_DB_PASSWORD}
+    depends_on:
+      studio-db:
+        condition: service_healthy
+      sbp-migration:
+        condition: service_completed_successfully
+      sbp-discovery-server:
+        condition: service_started
+
+  sbp-content-service:
+    build:
+      context: ..
+      dockerfile: sbp-content-service/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-content-service
+      CONTENT_PORT: ${CONTENT_PORT:-8086}
+      CONTENT_MANAGEMENT_PORT: ${CONTENT_MANAGEMENT_PORT:-9086}
+      CONTENT_DB_HOST: content-db
+      CONTENT_DB_PORT: 5432
+      CONTENT_DB_NAME: ${CONTENT_DB_NAME}
+      CONTENT_DB_USERNAME: ${CONTENT_DB_USERNAME}
+      CONTENT_DB_PASSWORD: ${CONTENT_DB_PASSWORD}
+    depends_on:
+      content-db:
+        condition: service_healthy
+      sbp-migration:
+        condition: service_completed_successfully
+      sbp-discovery-server:
+        condition: service_started
+
+  sbp-admin-service:
+    build:
+      context: ..
+      dockerfile: sbp-admin-service/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SBP_ENV: ${SBP_ENV:-prod}
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-admin-service
+      ADMIN_PORT: ${ADMIN_PORT:-8083}
+      ADMIN_MANAGEMENT_PORT: ${ADMIN_MANAGEMENT_PORT:-9083}
+      PROMETHEUS_URL: http://prometheus:9090
+      AUTH_DB_HOST: auth-db
+      AUTH_DB_PORT: 5432
+      USER_DB_HOST: user-db
+      USER_DB_PORT: 5432
+      PERSON_DB_HOST: person-db
+      PERSON_DB_PORT: 5432
+      STUDIO_DB_HOST: studio-db
+      STUDIO_DB_PORT: 5432
+      CONTENT_DB_HOST: content-db
+      CONTENT_DB_PORT: 5432
+      MONITORING_HEALTH_CONNECT_TIMEOUT_MS: ${MONITORING_HEALTH_CONNECT_TIMEOUT_MS:-2000}
+      MONITORING_HEALTH_READ_TIMEOUT_MS: ${MONITORING_HEALTH_READ_TIMEOUT_MS:-3000}
+      MONITORING_CACHE_TTL_SECONDS: ${MONITORING_CACHE_TTL_SECONDS:-15}
+      MONITORING_TRUSTED_HOST_SUFFIXES: ${MONITORING_TRUSTED_HOST_SUFFIXES:-sbp-auth-service,sbp-user-service,sbp-person-service,sbp-studio-service,sbp-content-service,sbp-api-gateway,sbp-admin-service,sbp-discovery-server,auth-db,user-db,person-db,studio-db,content-db,localhost,127.0.0.1}
+    depends_on:
+      - sbp-discovery-server
+      - prometheus
+
+  sbp-api-gateway:
+    build:
+      context: ..
+      dockerfile: sbp-api-gateway/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-api-gateway
+      GATEWAY_PORT: ${GATEWAY_PORT:-8080}
+      GATEWAY_MANAGEMENT_PORT: ${GATEWAY_MANAGEMENT_PORT:-9080}
+    ports:
+      - ${GATEWAY_PORT:-8080}:8080
+      - ${GATEWAY_MANAGEMENT_PORT:-9080}:9080
+    depends_on:
+      - sbp-discovery-server
       - sbp-auth-service
       - sbp-user-service
+      - sbp-person-service
+      - sbp-studio-service
+      - sbp-content-service
+      - sbp-admin-service
 
 volumes:
   sbp-auth-db-prod-data:
     name: sbp-auth-db-prod-data
   sbp-user-db-prod-data:
     name: sbp-user-db-prod-data
+  sbp-person-db-prod-data:
+    name: sbp-person-db-prod-data
+  sbp-studio-db-prod-data:
+    name: sbp-studio-db-prod-data
+  sbp-content-db-prod-data:
+    name: sbp-content-db-prod-data
+  sbp-reference-db-prod-data:
+    name: sbp-reference-db-prod-data

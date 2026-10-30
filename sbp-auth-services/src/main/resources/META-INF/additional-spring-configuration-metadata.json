@@ -16,7 +16,7 @@
       "name": "server.servlet.context-path",
       "type": "java.lang.String",
       "description": "Public API base path for auth.",
-      "defaultValue": "/api/auth"
+      "defaultValue": "/api/v1/auth"
     },
     {
       "name": "management.endpoints.web.exposure.include",

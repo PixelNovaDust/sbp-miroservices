@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.sbp</groupId>
+	<artifactId>sbp-microservices</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>sbp-microservices</name>
+	<description>SBP microservices reactor (build sbp-lib-common before services)</description>
+
+	<modules>
+		<module>sbp-lib-common</module>
+		<module>sbp-migration</module>
+		<module>sbp-discovery-server</module>
+		<module>sbp-api-gateway</module>
+		<module>sbp-auth-services</module>
+		<module>sbp-user-services</module>
+		<module>sbp-person-service</module>
+		<module>sbp-studio-service</module>
+		<module>sbp-content-service</module>
+		<module>sbp-reference-service</module>
+		<module>sbp-admin-service</module>
+	</modules>
+
+</project>

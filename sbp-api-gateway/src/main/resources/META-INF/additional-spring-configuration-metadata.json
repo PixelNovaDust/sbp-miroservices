@@ -13,10 +13,10 @@
       "defaultValue": 8080
     },
     {
-      "name": "server.servlet.context-path",
+      "name": "sbp.api.public-base-path",
       "type": "java.lang.String",
-      "description": "Public API base path for the gateway.",
-      "defaultValue": "/api/v1"
+      "description": "Public API base path segment for the gateway.",
+      "defaultValue": "/api/v1/gateway"
     },
     {
       "name": "management.endpoints.web.exposure.include",

@@ -1,0 +1,38 @@
+sbp:
+  monitoring:
+    infrastructure:
+      - name: auth-postgres
+        type: POSTGRESQL
+        environment: dev
+        host: ${AUTH_DB_HOST:localhost}
+        port: ${AUTH_DB_PORT:5432}
+        used-by-services:
+          - sbp-auth-service
+      - name: user-postgres
+        type: POSTGRESQL
+        environment: dev
+        host: ${USER_DB_HOST:localhost}
+        port: ${USER_DB_PORT:5433}
+        used-by-services:
+          - sbp-user-service
+      - name: person-postgres
+        type: POSTGRESQL
+        environment: dev
+        host: ${PERSON_DB_HOST:localhost}
+        port: ${PERSON_DB_PORT:5434}
+        used-by-services:
+          - sbp-person-service
+      - name: studio-postgres
+        type: POSTGRESQL
+        environment: dev
+        host: ${STUDIO_DB_HOST:localhost}
+        port: ${STUDIO_DB_PORT:5435}
+        used-by-services:
+          - sbp-studio-service
+      - name: content-postgres
+        type: POSTGRESQL
+        environment: dev
+        host: ${CONTENT_DB_HOST:localhost}
+        port: ${CONTENT_DB_PORT:5436}
+        used-by-services:
+          - sbp-content-service

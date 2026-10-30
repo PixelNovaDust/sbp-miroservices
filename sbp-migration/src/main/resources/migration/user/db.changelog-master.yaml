@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: user-001-initial
+      author: sbp
+      validCheckSum:
+        - 9:bb4de1391035a608f90fbdb6065f3dc0
+        - 9:9056847a5f176af9129de1dfe4fd50f4
+      changes:
+        - sqlFile:
+            path: changes/V001__initial_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

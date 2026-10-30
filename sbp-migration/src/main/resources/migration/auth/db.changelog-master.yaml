@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: auth-001-initial
+      author: sbp
+      validCheckSum:
+        - 9:12b7bc3af80e69233ea60446c2620782
+        - 9:85ca5a94261e29b0076d5f9c079322db
+      changes:
+        - sqlFile:
+            path: changes/V001__initial_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: auth-002-invitations-idp
+      author: sbp
+      validCheckSum:
+        - 9:6820c0d0ef95f6b7577f6a82c96d0cb1
+        - 9:c7527f9752ea5b61c0b4855b588f283d
+      changes:
+        - sqlFile:
+            path: changes/V002__invitations_and_idp.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: auth-003-consumer-idp-domains
+      author: sbp
+      validCheckSum:
+        - 9:7c06c03578e77509adb9829529fa53fc
+        - 9:0927dd086d05e2280dcd02f23eb582ef
+      changes:
+        - sqlFile:
+            path: changes/V003__consumer_idp_domains.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

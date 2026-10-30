@@ -1,7 +1,10 @@
 FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /build
+COPY sbp-lib-common ./sbp-lib-common
+RUN mvn -q -f sbp-lib-common/pom.xml install
 WORKDIR /app
-COPY pom.xml ./
-COPY src ./src
+COPY sbp-api-gateway/pom.xml ./
+COPY sbp-api-gateway/src ./src
 RUN mvn -q -DskipTests package
 
 FROM eclipse-temurin:17-jre-alpine

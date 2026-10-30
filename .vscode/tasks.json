@@ -2,9 +2,64 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "make db-dev",
+      "label": "Maven: compile sbp-reference-service",
+      "type": "process",
+      "command": "${workspaceFolder}\\mvnw.cmd",
+      "args": [
+        "-f",
+        "pom.xml",
+        "-pl",
+        "sbp-reference-service",
+        "-am",
+        "compile",
+        "-DskipTests"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: install sbp-lib-common",
+      "type": "process",
+      "command": "${workspaceFolder}\\mvnw.cmd",
+      "args": ["-f", "sbp-lib-common/pom.xml", "clean", "install", "-DskipTests"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maven: install sbp-lib-common (Docker)",
       "type": "shell",
-      "command": "make db-dev",
+      "command": "docker run --rm -v \"${workspaceFolder}:/ws\" -v \"${env:USERPROFILE}\\.m2:/root/.m2\" -w /ws maven:3.9-eclipse-temurin-17 mvn -q -f sbp-lib-common/pom.xml clean install -DskipTests",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "SBP: infra-dev (PowerShell)",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 infra-dev",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "SBP: migrate-dev (PowerShell)",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 migrate-dev",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "SBP: start-dev (PowerShell)",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 start-dev",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "make infra-dev",
+      "type": "shell",
+      "command": "make infra-dev",
       "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
@@ -16,9 +71,9 @@
       "problemMatcher": []
     },
     {
-      "label": "make db-prod",
+      "label": "make infra-prod",
       "type": "shell",
-      "command": "make db-prod",
+      "command": "make infra-prod",
       "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },

@@ -3,6 +3,16 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Discovery (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-discovery-server",
+      "mainClass": "com.sbp.discovery.SbpDiscoveryServerApplication",
+      "projectName": "sbp-discovery-server",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
+    },
+    {
+      "type": "java",
       "name": "Gateway (dev)",
       "request": "launch",
       "cwd": "${workspaceFolder}/sbp-api-gateway",
@@ -30,9 +40,95 @@
       "projectName": "sbp-user-services",
       "envFile": "${workspaceFolder}/env/.env.dev",
       "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
+    },
+    {
+      "type": "java",
+      "name": "Admin (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-admin-service",
+      "mainClass": "com.sbp.admin.SbpAdminServiceApplication",
+      "projectName": "sbp-admin-service",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
+    },
+    {
+      "type": "java",
+      "name": "Person (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-person-service",
+      "mainClass": "com.sbp.person.SbpPersonServiceApplication",
+      "projectName": "sbp-person-service",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
+    },
+    {
+      "type": "java",
+      "name": "Studio (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-studio-service",
+      "mainClass": "com.sbp.studio.SbpStudioServiceApplication",
+      "projectName": "sbp-studio-service",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
+    },
+    {
+      "type": "java",
+      "name": "Content (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-content-service",
+      "mainClass": "com.sbp.content.SbpContentServiceApplication",
+      "projectName": "sbp-content-service",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
+    },
+    {
+      "type": "java",
+      "name": "Reference (dev)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/sbp-reference-service",
+      "mainClass": "com.sbp.reference.SbpReferenceServiceApplication",
+      "envFile": "${workspaceFolder}/env/.env.dev",
+      "vmArgs": "-Dspring.profiles.active=dev -Duser.timezone=Asia/Kolkata"
     }
   ],
   "compounds": [
+    {
+      "name": "Microservices (dev)",
+      "configurations": ["Auth (dev)", "Users (dev)", "Admin (dev)", "Gateway (dev)"],
+      "stopAll": true
+    },
+    {
+      "name": "Domain services (dev)",
+      "configurations": [
+        "Reference (dev)",
+        "Studio (dev)",
+        "Person (dev)",
+        "Content (dev)"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Infra + apps (dev)",
+      "configurations": [
+        "Discovery (dev)",
+        "Auth (dev)",
+        "Users (dev)",
+        "Admin (dev)",
+        "Gateway (dev)"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Full stack (dev)",
+      "configurations": [
+        "Discovery (dev)",
+        "Auth (dev)",
+        "Users (dev)",
+        "Admin (dev)",
+        "Gateway (dev)"
+      ],
+      "stopAll": true
+    },
     {
       "name": "All services (dev)",
       "configurations": ["Gateway (dev)", "Auth (dev)", "Users (dev)"],

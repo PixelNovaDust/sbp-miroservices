@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+	<springProperty scope="context" name="LOG_DIR" source="sbp.logging.directory" defaultValue="logs"/>
+	<springProperty scope="context" name="LVL_APP" source="sbp.logging.level.application" defaultValue="INFO"/>
+	<springProperty scope="context" name="LVL_SEC" source="sbp.logging.level.security" defaultValue="INFO"/>
+	<springProperty scope="context" name="LVL_AUTH" source="sbp.logging.level.authentication" defaultValue="INFO"/>
+	<springProperty scope="context" name="LVL_DB" source="sbp.logging.level.database" defaultValue="INFO"/>
+	<springProperty scope="context" name="LVL_ROOT" source="sbp.logging.level.root" defaultValue="INFO"/>
+	<springProperty scope="context" name="BRIDGE_PKG" source="sbp.logging.application-package" defaultValue="com.sbp"/>
+	<springProperty scope="context" name="BRIDGE_ENABLED" source="sbp.logging.bridge-application-package" defaultValue="true"/>
+
+	<property name="SBP_FILE_PATTERN"
+		value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+
+	<appender name="SBP_APPLICATION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/ApplicationLog.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>${SBP_FILE_PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/ApplicationLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>400</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="SBP_SECURITY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/SecurityLog.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>${SBP_FILE_PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/SecurityLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>400</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="SBP_AUTHENTICATION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/AuthenticationLog.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>${SBP_FILE_PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/AuthenticationLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>400</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="SBP_DATABASE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/DatabaseLog.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>${SBP_FILE_PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/DatabaseLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>400</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="SBP_ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/ErrorLog.log</file>
+		<append>true</append>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<encoder>
+			<pattern>${SBP_FILE_PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/ErrorLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>400</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="SBP_CATALINA_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/catalina.out</file>
+		<append>true</append>
+		<encoder>
+			<pattern>${SBP_FILE_PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/catalina.%d{yyyy-MM-dd}.out</fileNamePattern>
+			<maxHistory>400</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<logger name="com.sbp.logging.application" level="${LVL_APP}" additivity="false">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="SBP_APPLICATION_FILE"/>
+		<appender-ref ref="SBP_ERROR_FILE"/>
+	</logger>
+
+	<logger name="com.sbp.logging.security" level="${LVL_SEC}" additivity="false">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="SBP_SECURITY_FILE"/>
+		<appender-ref ref="SBP_ERROR_FILE"/>
+	</logger>
+
+	<logger name="com.sbp.logging.authentication" level="${LVL_AUTH}" additivity="false">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="SBP_AUTHENTICATION_FILE"/>
+		<appender-ref ref="SBP_ERROR_FILE"/>
+	</logger>
+
+	<logger name="com.sbp.logging.database" level="${LVL_DB}" additivity="false">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="SBP_DATABASE_FILE"/>
+		<appender-ref ref="SBP_ERROR_FILE"/>
+	</logger>
+
+	<logger name="${BRIDGE_PKG}" level="${LVL_ROOT}" additivity="true">
+		<appender-ref ref="SBP_APPLICATION_FILE"/>
+		<appender-ref ref="SBP_ERROR_FILE"/>
+	</logger>
+
+	<root level="${LVL_ROOT}">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="SBP_CATALINA_FILE"/>
+	</root>
+</configuration>

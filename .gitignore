@@ -43,6 +43,13 @@ env/.env.*
 !env/.env.dev.example
 !env/.env.prod.example
 
+# Local service runtime (scripts/run.ps1 start/stop)
+scripts/.runtime/
+
+# DBeaver (generated from env/.env.dev via scripts/sync-dbeaver.ps1; may contain dev DB passwords)
+.dbeaver/credentials-config.json
+.dbeaver/data-sources.json
+
 # Credentials & keys
 **/*.pem
 **/*.key

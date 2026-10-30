@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: content-001-initial
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V001__initial_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: content-002-catalog
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V002__content_catalog_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: reference-001-taxonomies-platforms
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V001__taxonomies_and_social_platforms.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true
+  - changeSet:
+      id: reference-002-entity-taxonomies
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V002__entity_taxonomies.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: reference-003-taxonomy-types
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V003__taxonomy_types.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true
+  - changeSet:
+      id: reference-004-role-taxonomy-type
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V004__role_taxonomy_type.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true

@@ -1,0 +1,95 @@
+{
+  "properties": [
+    {
+      "name": "spring.profiles.active",
+      "type": "java.lang.String",
+      "description": "Active Spring profile. Set via env SPRING_PROFILES_ACTIVE.",
+      "defaultValue": "dev"
+    },
+    {
+      "name": "sbp.person.port",
+      "type": "java.lang.Integer",
+      "description": "HTTP port for the person service. Overridden by env PERSON_PORT.",
+      "defaultValue": 8084
+    },
+    {
+      "name": "server.servlet.context-path",
+      "type": "java.lang.String",
+      "description": "Public API base path for users.",
+      "defaultValue": "/api/v1/persons"
+    },
+    {
+      "name": "management.endpoints.web.exposure.include",
+      "type": "java.lang.String",
+      "description": "Actuator endpoints exposed over HTTP.",
+      "defaultValue": "health,info,metrics"
+    },
+    {
+      "name": "management.endpoint.health.show-details",
+      "type": "java.lang.String",
+      "description": "Health endpoint detail visibility: never, when-authorized, or always.",
+      "defaultValue": "when-authorized"
+    },
+    {
+      "name": "sbp.internal-api.base-path",
+      "type": "java.lang.String",
+      "description": "Reserved base path for internal user APIs.",
+      "defaultValue": "/internal/persons"
+    },
+    {
+      "name": "sbp.person.datasource.host",
+      "type": "java.lang.String",
+      "description": "PostgreSQL host. Overridden by env PERSON_DB_HOST.",
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "sbp.person.datasource.port",
+      "type": "java.lang.Integer",
+      "description": "PostgreSQL port. Overridden by env PERSON_DB_PORT.",
+      "defaultValue": 5432
+    },
+    {
+      "name": "sbp.person.datasource.name",
+      "type": "java.lang.String",
+      "description": "PostgreSQL database name. Overridden by env PERSON_DB_NAME."
+    },
+    {
+      "name": "sbp.person.datasource.username",
+      "type": "java.lang.String",
+      "description": "PostgreSQL user. Overridden by env PERSON_DB_USERNAME."
+    },
+    {
+      "name": "sbp.person.datasource.password",
+      "type": "java.lang.String",
+      "description": "PostgreSQL password. Overridden by env PERSON_DB_PASSWORD."
+    },
+    {
+      "name": "sbp.person.datasource.timezone",
+      "type": "java.lang.String",
+      "description": "IANA timezone for JDBC TimeZone and Hibernate (use Asia/Kolkata). Overridden by env APP_TIMEZONE.",
+      "defaultValue": "Asia/Kolkata"
+    },
+    {
+      "name": "spring.datasource.url",
+      "type": "java.lang.String",
+      "description": "JDBC URL built from sbp.person.datasource.* including TimeZone query param."
+    },
+    {
+      "name": "spring.jpa.hibernate.ddl-auto",
+      "type": "java.lang.String",
+      "description": "Hibernate schema mode: update (dev) or validate (prod)."
+    },
+    {
+      "name": "spring.jpa.properties.hibernate.jdbc.time_zone",
+      "type": "java.lang.String",
+      "description": "Hibernate JDBC time zone; mirrors sbp.person.datasource.timezone.",
+      "defaultValue": "Asia/Kolkata"
+    },
+    {
+      "name": "spring.devtools.restart.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable DevTools restart on classpath changes (dev profile).",
+      "defaultValue": true
+    }
+  ]
+}

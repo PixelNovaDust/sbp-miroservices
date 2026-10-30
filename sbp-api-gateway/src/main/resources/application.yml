@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: sbp-api-gateway
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: auth-service
+              uri: lb://sbp-auth-service
+              predicates:
+                - Path=/api/v1/auth/**
+            - id: user-service
+              uri: lb://sbp-user-service
+              predicates:
+                - Path=/api/v1/users/**
+            - id: person-service
+              uri: lb://sbp-person-service
+              predicates:
+                - Path=/api/v1/persons/**
+            - id: studio-service
+              uri: lb://sbp-studio-service
+              predicates:
+                - Path=/api/v1/studios/**
+            - id: content-service
+              uri: lb://sbp-content-service
+              predicates:
+                - Path=/api/v1/content/**
+            - id: reference-service-taxonomies
+              uri: lb://sbp-reference-service
+              predicates:
+                - Path=/api/v1/taxonomies/**
+            - id: reference-service-social-platforms
+              uri: lb://sbp-reference-service
+              predicates:
+                - Path=/api/v1/social-platforms/**
+            - id: admin-service
+              uri: lb://sbp-admin-service
+              predicates:
+                - Path=/api/v1/admin/**
+
+server:
+  port: ${GATEWAY_PORT:8080}
+
+management:
+  server:
+    port: ${GATEWAY_MANAGEMENT_PORT:9080}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: false
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    metadata-map:
+      management.port: ${GATEWAY_MANAGEMENT_PORT:9080}
+      environment: ${SPRING_PROFILES_ACTIVE:dev}

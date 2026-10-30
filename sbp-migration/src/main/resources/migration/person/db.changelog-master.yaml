@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: person-001-initial
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V001__initial_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: person-002-person-schema
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V002__person_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true
+  - changeSet:
+      id: person-003-profile-extensions
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V003__person_profile_extensions.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: person-004-career-normalize
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V004__career_normalize_roles_drop_json.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true
