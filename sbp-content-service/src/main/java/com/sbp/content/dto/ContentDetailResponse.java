@@ -17,7 +17,6 @@ public record ContentDetailResponse(
 		boolean adult,
 		List<ContentAssetResponse> assets,
 		ContentAuditResponse audit,
-		String backdropPath,
 		List<NamedRefResponse> casts,
 		ContentRating contentRating,
 		ContentType contentType,
@@ -27,6 +26,11 @@ public record ContentDetailResponse(
 		@JsonProperty("originCountry") List<String> originCountry,
 		String overview,
 		String posterPath,
+		String backdropPath,
+		UUID posterFileId,
+		UUID backdropFileId,
+		String posterUrl,
+		String backdropUrl,
 		LocalDate releaseDate,
 		Integer runtime,
 		ContentStatsResponse stats,
@@ -50,7 +54,7 @@ public record ContentDetailResponse(
 	public record ContentAssetResponse(AssetType type, List<ContentAssetKeyResponse> keys) {
 	}
 
-	public record ContentAssetKeyResponse(UUID id, String value) {
+	public record ContentAssetKeyResponse(UUID id, String value, UUID storageFileId, String downloadUrl) {
 	}
 
 }

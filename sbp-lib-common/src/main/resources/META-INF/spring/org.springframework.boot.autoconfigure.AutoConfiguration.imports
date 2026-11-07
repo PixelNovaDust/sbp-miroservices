@@ -1,1 +1,2 @@
 com.sbp.common.logging.SbpLoggingAutoConfiguration
+com.sbp.common.storage.SbpStorageAutoConfiguration

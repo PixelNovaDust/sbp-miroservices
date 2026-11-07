@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -13,13 +14,12 @@ import com.sbp.person.entity.BodyType;
 import com.sbp.person.repository.BodyTypeRepository;
 
 @Service
+@RequiredArgsConstructor
+
 public class BodyTypeService {
 
 	private final BodyTypeRepository bodyTypeRepository;
 
-	public BodyTypeService(BodyTypeRepository bodyTypeRepository) {
-		this.bodyTypeRepository = bodyTypeRepository;
-	}
 
 	@Transactional(readOnly = true)
 	public List<LookupTypeResponse> list(Boolean active) {

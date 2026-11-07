@@ -6,9 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "auth_identity_providers")
+@Getter
+@Setter
+@NoArgsConstructor
 public class IdentityProvider {
 
 	@Id
@@ -23,33 +29,5 @@ public class IdentityProvider {
 
 	@Column(name = "login_url", length = 1024)
 	private String loginUrl;
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getProviderKey() {
-		return providerKey;
-	}
-
-	public void setProviderKey(String providerKey) {
-		this.providerKey = providerKey;
-	}
-
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
-	public String getLoginUrl() {
-		return loginUrl;
-	}
-
-	public void setLoginUrl(String loginUrl) {
-		this.loginUrl = loginUrl;
-	}
 
 }

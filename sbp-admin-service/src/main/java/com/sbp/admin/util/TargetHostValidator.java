@@ -1,17 +1,17 @@
 package com.sbp.admin.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import com.sbp.admin.config.MonitoringProperties;
 
 @Component
+@RequiredArgsConstructor
+
 public class TargetHostValidator {
 
 	private final MonitoringProperties properties;
 
-	public TargetHostValidator(MonitoringProperties properties) {
-		this.properties = properties;
-	}
 
 	public boolean isTrusted(String host) {
 		if (host == null || host.isBlank()) {

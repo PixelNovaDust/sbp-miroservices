@@ -31,6 +31,8 @@ public record ContentWriteRequest(
 		Integer runtime,
 		String posterPath,
 		String backdropPath,
+		UUID posterFileId,
+		UUID backdropFileId,
 		List<UUID> studioIds,
 		List<UUID> castPersonIds,
 		List<UUID> tagIds,
@@ -43,7 +45,7 @@ public record ContentWriteRequest(
 			@Valid List<ContentAssetKeyInput> keys) {
 	}
 
-	public record ContentAssetKeyInput(@NotBlank String value) {
+	public record ContentAssetKeyInput(String value, UUID storageFileId) {
 	}
 
 }

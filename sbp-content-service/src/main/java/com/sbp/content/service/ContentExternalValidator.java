@@ -1,5 +1,6 @@
 package com.sbp.content.service;
 
+import lombok.RequiredArgsConstructor;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.sbp.content.domain.ContentTaxonomyKind;
 import com.sbp.content.dto.ContentWriteRequest;
 import com.sbp.content.exception.BadRequestException;
 
+@RequiredArgsConstructor
 @Component
 public class ContentExternalValidator {
 
@@ -28,14 +30,6 @@ public class ContentExternalValidator {
 
 	private final ReferenceServiceClient referenceServiceClient;
 
-	public ContentExternalValidator(
-			StudioServiceClient studioServiceClient,
-			PersonServiceClient personServiceClient,
-			ReferenceServiceClient referenceServiceClient) {
-		this.studioServiceClient = studioServiceClient;
-		this.personServiceClient = personServiceClient;
-		this.referenceServiceClient = referenceServiceClient;
-	}
 
 	public void validateWrite(ContentWriteRequest request) {
 		validateStudios(request.studioIds());

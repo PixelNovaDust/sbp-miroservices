@@ -1,5 +1,6 @@
 package com.sbp.person.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,14 +25,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/{personId}/social-accounts")
 public class PersonSocialAccountController {
 
 	private final PersonSocialAccountService socialAccountService;
 
-	public PersonSocialAccountController(PersonSocialAccountService socialAccountService) {
-		this.socialAccountService = socialAccountService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<PersonSocialAccountResponse>>> list(

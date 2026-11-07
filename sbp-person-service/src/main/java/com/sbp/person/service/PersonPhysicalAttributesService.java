@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import com.sbp.person.exception.ResourceNotFoundException;
 import com.sbp.person.repository.BodyTypeRepository;
 import com.sbp.person.repository.PersonPhysicalAttributesRepository;
 
+@RequiredArgsConstructor
 @Service
 public class PersonPhysicalAttributesService {
 
@@ -24,14 +26,6 @@ public class PersonPhysicalAttributesService {
 
 	private final BodyTypeRepository bodyTypeRepository;
 
-	public PersonPhysicalAttributesService(
-			PersonSupportService personSupportService,
-			PersonPhysicalAttributesRepository physicalAttributesRepository,
-			BodyTypeRepository bodyTypeRepository) {
-		this.personSupportService = personSupportService;
-		this.physicalAttributesRepository = physicalAttributesRepository;
-		this.bodyTypeRepository = bodyTypeRepository;
-	}
 
 	@Transactional(readOnly = true)
 	public PersonPhysicalAttributesResponse get(UUID personId) {

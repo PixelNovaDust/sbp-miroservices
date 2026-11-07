@@ -16,10 +16,16 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "content_taxonomies")
 @IdClass(ContentTaxonomyLink.ContentTaxonomyLinkId.class)
+@Getter
+@Setter
+@NoArgsConstructor
 public class ContentTaxonomyLink {
 
 	@Id
@@ -40,46 +46,6 @@ public class ContentTaxonomyLink {
 
 	@Column(name = "sort_order", nullable = false)
 	private int sortOrder;
-
-	public UUID getContentId() {
-		return contentId;
-	}
-
-	public void setContentId(UUID contentId) {
-		this.contentId = contentId;
-	}
-
-	public UUID getTaxonomyId() {
-		return taxonomyId;
-	}
-
-	public void setTaxonomyId(UUID taxonomyId) {
-		this.taxonomyId = taxonomyId;
-	}
-
-	public Content getContent() {
-		return content;
-	}
-
-	public void setContent(Content content) {
-		this.content = content;
-	}
-
-	public ContentTaxonomyKind getTaxonomyType() {
-		return taxonomyType;
-	}
-
-	public void setTaxonomyType(ContentTaxonomyKind taxonomyType) {
-		this.taxonomyType = taxonomyType;
-	}
-
-	public int getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
 
 	public static class ContentTaxonomyLinkId implements Serializable {
 

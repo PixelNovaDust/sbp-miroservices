@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import com.sbp.person.exception.ResourceNotFoundException;
 import com.sbp.person.repository.PersonStudioRepository;
 import com.sbp.person.repository.RelationshipTypeRepository;
 
+@RequiredArgsConstructor
 @Service
 public class PersonStudioService {
 
@@ -25,14 +27,6 @@ public class PersonStudioService {
 
 	private final RelationshipTypeRepository relationshipTypeRepository;
 
-	public PersonStudioService(
-			PersonSupportService personSupportService,
-			PersonStudioRepository personStudioRepository,
-			RelationshipTypeRepository relationshipTypeRepository) {
-		this.personSupportService = personSupportService;
-		this.personStudioRepository = personStudioRepository;
-		this.relationshipTypeRepository = relationshipTypeRepository;
-	}
 
 	@Transactional(readOnly = true)
 	public List<PersonStudioResponse> list(UUID personId) {

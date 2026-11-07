@@ -28,7 +28,8 @@ build/
 .DS_Store
 Thumbs.db
 
-# Logs & debug
+# Logs & debug (runtime output — see sbp-lib-common logback + Tomcat access logs)
+**/logs/
 *.log
 *.err
 *-startup.log
@@ -46,7 +47,7 @@ env/.env.*
 # Local service runtime (scripts/run.ps1 start/stop)
 scripts/.runtime/
 
-# DBeaver (generated from env/.env.dev via scripts/sync-dbeaver.ps1; may contain dev DB passwords)
+# DBeaver (generated from env/.env.dev via scripts/lib/sync-dbeaver.ps1; may contain dev DB passwords)
 .dbeaver/credentials-config.json
 .dbeaver/data-sources.json
 

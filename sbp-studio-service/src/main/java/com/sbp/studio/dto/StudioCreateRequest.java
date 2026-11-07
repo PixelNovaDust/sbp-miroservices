@@ -8,5 +8,6 @@ public record StudioCreateRequest(
 		@Size(max = 150) String slug,
 		String website,
 		String description,
+		String svg,
 		@NotBlank @Size(max = 100) String actor) {
 }

@@ -13,9 +13,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "person_social_accounts")
+@Getter
+@Setter
+@NoArgsConstructor
 public class PersonSocialAccount {
 
 	@Id
@@ -60,101 +66,5 @@ public class PersonSocialAccount {
 	@Version
 	@Column(nullable = false)
 	private int version;
-
-	public UUID getId() {
-		return id;
-	}
-
-	public Person getPerson() {
-		return person;
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-	}
-
-	public UUID getSocialPlatformId() {
-		return socialPlatformId;
-	}
-
-	public void setSocialPlatformId(UUID socialPlatformId) {
-		this.socialPlatformId = socialPlatformId;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public boolean isVerified() {
-		return verified;
-	}
-
-	public void setVerified(boolean verified) {
-		this.verified = verified;
-	}
-
-	public boolean isAvailable() {
-		return available;
-	}
-
-	public void setAvailable(boolean available) {
-		this.available = available;
-	}
-
-	public Long getFollowersCount() {
-		return followersCount;
-	}
-
-	public void setFollowersCount(Long followersCount) {
-		this.followersCount = followersCount;
-	}
-
-	public Instant getLastSyncedAt() {
-		return lastSyncedAt;
-	}
-
-	public void setLastSyncedAt(Instant lastSyncedAt) {
-		this.lastSyncedAt = lastSyncedAt;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Instant updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public int getVersion() {
-		return version;
-	}
 
 }

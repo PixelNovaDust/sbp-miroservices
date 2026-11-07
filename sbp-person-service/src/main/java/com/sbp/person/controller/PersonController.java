@@ -1,9 +1,11 @@
 package com.sbp.person.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sbp.common.response.ApiResponse;
 import com.sbp.common.response.ApiResponseFactory;
@@ -25,11 +29,13 @@ import com.sbp.person.dto.PersonSummaryResponse;
 import com.sbp.person.dto.PersonUpdateRequest;
 import com.sbp.person.entity.Person;
 import com.sbp.person.service.PersonAggregateService;
+import com.sbp.person.service.PersonMediaService;
 import com.sbp.person.service.PersonService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping
 public class PersonController {
@@ -38,10 +44,8 @@ public class PersonController {
 
 	private final PersonAggregateService personAggregateService;
 
-	public PersonController(PersonService personService, PersonAggregateService personAggregateService) {
-		this.personService = personService;
-		this.personAggregateService = personAggregateService;
-	}
+	private final PersonMediaService personMediaService;
+
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<PersonSummaryResponse>>> list(
@@ -99,6 +103,28 @@ public class PersonController {
 		personService.softDelete(id, actor);
 		PersonProfileResponse data = personAggregateService.getProfile(id);
 		return ResponseEntity.ok(success("PERSON_DEACTIVATED", "Person deactivated", data, request));
+	}
+
+	@PostMapping(value = "/{id}/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ApiResponse<PersonProfileResponse>> uploadProfileImage(
+			@PathVariable UUID id,
+			@RequestPart("file") MultipartFile file,
+			@RequestParam(defaultValue = "system") String actor,
+			HttpServletRequest request) throws java.io.IOException {
+		personMediaService.uploadProfile(id, file, actor);
+		PersonProfileResponse data = personAggregateService.getProfile(id);
+		return ResponseEntity.ok(success("PERSON_PROFILE_IMAGE_UPLOADED", "Profile image uploaded", data, request));
+	}
+
+	@PostMapping(value = "/{id}/backdrop-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ApiResponse<PersonProfileResponse>> uploadBackdropImage(
+			@PathVariable UUID id,
+			@RequestPart("file") MultipartFile file,
+			@RequestParam(defaultValue = "system") String actor,
+			HttpServletRequest request) throws java.io.IOException {
+		personMediaService.uploadBackdrop(id, file, actor);
+		PersonProfileResponse data = personAggregateService.getProfile(id);
+		return ResponseEntity.ok(success("PERSON_BACKDROP_IMAGE_UPLOADED", "Backdrop image uploaded", data, request));
 	}
 
 	@PostMapping("/{id}/restore")

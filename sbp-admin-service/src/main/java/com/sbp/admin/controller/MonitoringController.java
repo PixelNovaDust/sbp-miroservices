@@ -1,5 +1,6 @@
 package com.sbp.admin.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,14 +20,13 @@ import com.sbp.admin.dto.MonitoringDtos.ServicesResponse;
 import com.sbp.admin.service.MonitoringService;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/monitoring")
 public class MonitoringController {
 
 	private final MonitoringService monitoringService;
 
-	public MonitoringController(MonitoringService monitoringService) {
-		this.monitoringService = monitoringService;
-	}
 
 	@GetMapping("/overview")
 	public OverviewResponse overview() {

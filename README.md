@@ -1,6 +1,6 @@
 # SBP Microservices
 
-Spring Boot **4.1.1** microservices with Eureka service discovery, API Gateway routing, and a dedicated **Admin monitoring** service (Prometheus + Grafana).
+Spring Boot **4.1.1** microservices (**JDK 21**) with Eureka service discovery, API Gateway routing, and a dedicated **Admin monitoring** service (Prometheus + Grafana).
 
 ## Quick start (Docker)
 
@@ -8,10 +8,10 @@ Stack names: **sbp-dev** (development), **sbp-prod** (production).
 
 ```powershell
 copy env\.env.dev.example env\.env.dev
-.\scripts\run.ps1 start-dev
+.\scripts\run.ps1 up dev
 ```
 
-(On Git Bash / WSL you can use `make start-dev` instead. If Windows blocks `make.exe`, use `run.ps1` only.)
+(On Git Bash / WSL you can use `make start-dev` or `./scripts/run.sh up dev`. If Windows blocks `make.exe`, use `run.ps1` only. Run `.\scripts\run.ps1 help` for the full command table.)
 
 - Gateway: http://localhost:8080/api/v1/gateway/health
 - Auth: http://localhost:8080/api/v1/auth/health

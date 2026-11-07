@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
@@ -12,13 +13,12 @@ import com.sbp.person.entity.RelationshipType;
 import com.sbp.person.repository.RelationshipTypeRepository;
 
 @Service
+@RequiredArgsConstructor
+
 public class RelationshipTypeService {
 
 	private final RelationshipTypeRepository relationshipTypeRepository;
 
-	public RelationshipTypeService(RelationshipTypeRepository relationshipTypeRepository) {
-		this.relationshipTypeRepository = relationshipTypeRepository;
-	}
 
 	@Transactional(readOnly = true)
 	public List<LookupTypeResponse> list(Boolean active) {

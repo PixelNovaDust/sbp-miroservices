@@ -7,6 +7,7 @@ public record SocialPlatformCreateRequest(
 		@NotBlank @Size(max = 100) String name,
 		@NotBlank @Size(max = 100) String slug,
 		@NotBlank @Size(max = 255) String baseUrl,
+		String svg,
 		String svgIcon,
 		@Size(max = 20) String brandColor,
 		Boolean active,

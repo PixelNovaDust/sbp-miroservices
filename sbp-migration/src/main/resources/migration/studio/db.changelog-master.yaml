@@ -26,3 +26,12 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: true
             stripComments: true
+  - changeSet:
+      id: studio-004-logo-svg
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V004__studio_logo_svg.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

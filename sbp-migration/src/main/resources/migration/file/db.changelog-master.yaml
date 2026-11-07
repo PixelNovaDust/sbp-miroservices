@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: file-001-file-storage
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V001__file_storage.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true
+  - changeSet:
+      id: file-002-checksum-varchar
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V002__file_storage_checksum_varchar.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true

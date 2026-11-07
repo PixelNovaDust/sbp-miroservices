@@ -10,9 +10,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "social_platforms")
+@Getter
+@Setter
+@NoArgsConstructor
 public class SocialPlatform {
 
 	@Id
@@ -31,6 +37,12 @@ public class SocialPlatform {
 
 	@Column(name = "svg_icon", columnDefinition = "TEXT")
 	private String svgIcon;
+
+	@Column(name = "logo")
+	private UUID logo;
+
+	@Column(columnDefinition = "TEXT")
+	private String svg;
 
 	@Column(name = "brand_color", length = 20)
 	private String brandColor;
@@ -53,93 +65,5 @@ public class SocialPlatform {
 	@Version
 	@Column(nullable = false)
 	private int version;
-
-	public UUID getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSlug() {
-		return slug;
-	}
-
-	public void setSlug(String slug) {
-		this.slug = slug;
-	}
-
-	public String getBaseUrl() {
-		return baseUrl;
-	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
-
-	public String getSvgIcon() {
-		return svgIcon;
-	}
-
-	public void setSvgIcon(String svgIcon) {
-		this.svgIcon = svgIcon;
-	}
-
-	public String getBrandColor() {
-		return brandColor;
-	}
-
-	public void setBrandColor(String brandColor) {
-		this.brandColor = brandColor;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Instant updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public int getVersion() {
-		return version;
-	}
 
 }

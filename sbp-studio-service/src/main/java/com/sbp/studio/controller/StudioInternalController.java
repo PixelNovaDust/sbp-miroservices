@@ -1,5 +1,6 @@
 package com.sbp.studio.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,12 @@ import com.sbp.studio.service.StudioService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@RequiredArgsConstructor
+
 public class StudioInternalController {
 
 	private final StudioService studioService;
 
-	public StudioInternalController(StudioService studioService) {
-		this.studioService = studioService;
-	}
 
 	@GetMapping("/internal/{studioId}")
 	public ResponseEntity<ApiResponse<StudioResponse>> getInternal(

@@ -17,3 +17,21 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: true
             stripComments: true
+  - changeSet:
+      id: content-003-country-code-varchar
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V003__content_country_code_varchar.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: content-004-media-file-ids
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V004__content_media_file_ids.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

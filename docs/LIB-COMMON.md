@@ -17,6 +17,8 @@ com.sbp.common/
     SbpLogger, SbpLoggingProperties, …
 ```
 
+Logging configuration and categories: [LOGGING.md](LOGGING.md).
+
 ## Install
 
 ```bash

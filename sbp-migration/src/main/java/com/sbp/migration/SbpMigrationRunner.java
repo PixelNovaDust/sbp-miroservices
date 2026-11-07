@@ -11,7 +11,7 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 
 /**
- * Applies Liquibase changelogs for auth, user, person, studio, content, and reference databases (env-driven JDBC URLs).
+ * Applies Liquibase changelogs for auth, user, person, studio, content, reference, and file-storage databases (env-driven JDBC URLs).
  */
 public final class SbpMigrationRunner {
 
@@ -25,11 +25,14 @@ public final class SbpMigrationRunner {
 		runTarget("studio", MigrationTarget.studioFromEnv());
 		runTarget("content", MigrationTarget.contentFromEnv());
 		runTarget("reference", MigrationTarget.referenceFromEnv());
+		runTarget("file-storage", MigrationTarget.fileFromEnv());
 		System.out.println("All migrations completed successfully.");
 	}
 
 	private static boolean clearChecksumsEnabled() {
-		return "true".equalsIgnoreCase(System.getenv("LIQUIBASE_CLEAR_CHECKSUMS"));
+		// Custom flag (not a Liquibase env var — avoids Liquibase 4.x "invalid LIQUIBASE_*" warnings).
+		return "true".equalsIgnoreCase(System.getenv("SBP_CLEAR_LIQUIBASE_CHECKSUMS"))
+				|| "true".equalsIgnoreCase(System.getenv("LIQUIBASE_CLEAR_CHECKSUMS"));
 	}
 
 	private static void runTarget(String label, MigrationTarget target) throws Exception {

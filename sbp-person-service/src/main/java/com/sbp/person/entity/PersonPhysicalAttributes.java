@@ -12,9 +12,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "person_physical_attributes")
+@Getter
+@Setter
+@NoArgsConstructor
 public class PersonPhysicalAttributes {
 
 	@Id
@@ -50,81 +56,5 @@ public class PersonPhysicalAttributes {
 
 	@Column(name = "updated_at", nullable = false)
 	private Instant updatedAt;
-
-	public UUID getPersonId() {
-		return personId;
-	}
-
-	public Person getPerson() {
-		return person;
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-	}
-
-	public Short getBust() {
-		return bust;
-	}
-
-	public void setBust(Short bust) {
-		this.bust = bust;
-	}
-
-	public Short getWaist() {
-		return waist;
-	}
-
-	public void setWaist(Short waist) {
-		this.waist = waist;
-	}
-
-	public Short getHips() {
-		return hips;
-	}
-
-	public void setHips(Short hips) {
-		this.hips = hips;
-	}
-
-	public BodyType getBodyType() {
-		return bodyType;
-	}
-
-	public void setBodyType(BodyType bodyType) {
-		this.bodyType = bodyType;
-	}
-
-	public String getEyeColor() {
-		return eyeColor;
-	}
-
-	public void setEyeColor(String eyeColor) {
-		this.eyeColor = eyeColor;
-	}
-
-	public String getHairColor() {
-		return hairColor;
-	}
-
-	public void setHairColor(String hairColor) {
-		this.hairColor = hairColor;
-	}
-
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
-
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Instant updatedAt) {
-		this.updatedAt = updatedAt;
-	}
 
 }

@@ -1,5 +1,6 @@
 package com.sbp.person.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -22,14 +23,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/body-types")
 public class BodyTypeController {
 
 	private final BodyTypeService bodyTypeService;
 
-	public BodyTypeController(BodyTypeService bodyTypeService) {
-		this.bodyTypeService = bodyTypeService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<LookupTypeResponse>>> list(

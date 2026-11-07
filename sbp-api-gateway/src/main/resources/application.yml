@@ -38,6 +38,10 @@ spring:
               uri: lb://sbp-reference-service
               predicates:
                 - Path=/api/v1/social-platforms/**
+            - id: file-storage-service
+              uri: lb://sbp-file-storage-service
+              predicates:
+                - Path=/api/v1/files/**
             - id: admin-service
               uri: lb://sbp-admin-service
               predicates:

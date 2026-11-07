@@ -11,9 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "auth_invitations")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Invitation {
 
 	@Id
@@ -32,41 +38,5 @@ public class Invitation {
 
 	@Column(name = "expires_at")
 	private Instant expiresAt;
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public IdentityProvider getIdentityProvider() {
-		return identityProvider;
-	}
-
-	public void setIdentityProvider(IdentityProvider identityProvider) {
-		this.identityProvider = identityProvider;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Instant getExpiresAt() {
-		return expiresAt;
-	}
-
-	public void setExpiresAt(Instant expiresAt) {
-		this.expiresAt = expiresAt;
-	}
 
 }

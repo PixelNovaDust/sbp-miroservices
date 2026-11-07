@@ -1,5 +1,6 @@
 package com.sbp.content.service;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import com.sbp.content.repository.ContentOriginCountryRepository;
 import com.sbp.content.repository.ContentStudioLinkRepository;
 import com.sbp.content.repository.ContentTaxonomyLinkRepository;
 
+@RequiredArgsConstructor
 @Component
 public class ContentGraphPersistence {
 
@@ -39,20 +41,6 @@ public class ContentGraphPersistence {
 
 	private final ContentAssetKeyRepository assetKeyRepository;
 
-	public ContentGraphPersistence(
-			ContentOriginCountryRepository originCountryRepository,
-			ContentStudioLinkRepository studioLinkRepository,
-			ContentCastLinkRepository castLinkRepository,
-			ContentTaxonomyLinkRepository taxonomyLinkRepository,
-			ContentAssetRepository assetRepository,
-			ContentAssetKeyRepository assetKeyRepository) {
-		this.originCountryRepository = originCountryRepository;
-		this.studioLinkRepository = studioLinkRepository;
-		this.castLinkRepository = castLinkRepository;
-		this.taxonomyLinkRepository = taxonomyLinkRepository;
-		this.assetRepository = assetRepository;
-		this.assetKeyRepository = assetKeyRepository;
-	}
 
 	public void replaceGraph(Content content, ContentWriteRequest request) {
 		UUID contentId = content.getId();
@@ -164,12 +152,18 @@ public class ContentGraphPersistence {
 		}
 		int order = 0;
 		for (ContentAssetKeyInput keyInput : keys) {
-			if (keyInput == null || keyInput.value() == null || keyInput.value().isBlank()) {
+			if (keyInput == null) {
+				continue;
+			}
+			boolean hasValue = keyInput.value() != null && !keyInput.value().isBlank();
+			boolean hasFile = keyInput.storageFileId() != null;
+			if (!hasValue && !hasFile) {
 				continue;
 			}
 			ContentAssetKey key = new ContentAssetKey();
 			key.setAsset(asset);
-			key.setStorageKey(keyInput.value().trim());
+			key.setStorageKey(hasValue ? keyInput.value().trim() : keyInput.storageFileId().toString());
+			key.setStorageFileId(keyInput.storageFileId());
 			key.setSortOrder(order++);
 			assetKeyRepository.save(key);
 		}

@@ -1,5 +1,6 @@
 package com.sbp.content.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import com.sbp.content.mapper.ContentMapper;
 import com.sbp.content.repository.ContentRepository;
 import com.sbp.content.spec.ContentSpecifications;
 
+@RequiredArgsConstructor
 @Service
 public class ContentService {
 
@@ -27,16 +29,6 @@ public class ContentService {
 
 	private final ContentSupportService contentSupportService;
 
-	public ContentService(
-			ContentRepository contentRepository,
-			ContentExternalValidator externalValidator,
-			ContentGraphPersistence graphPersistence,
-			ContentSupportService contentSupportService) {
-		this.contentRepository = contentRepository;
-		this.externalValidator = externalValidator;
-		this.graphPersistence = graphPersistence;
-		this.contentSupportService = contentSupportService;
-	}
 
 	@Transactional(readOnly = true)
 	public List<ContentSummaryResponse> list(
@@ -104,6 +96,12 @@ public class ContentService {
 		entity.setRuntimeMinutes(request.runtime());
 		entity.setPosterPath(request.posterPath());
 		entity.setBackdropPath(request.backdropPath());
+		if (request.posterFileId() != null) {
+			entity.setPosterFileId(request.posterFileId());
+		}
+		if (request.backdropFileId() != null) {
+			entity.setBackdropFileId(request.backdropFileId());
+		}
 	}
 
 }

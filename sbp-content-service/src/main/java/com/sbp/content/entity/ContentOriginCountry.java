@@ -12,10 +12,16 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "content_production_countries")
 @IdClass(ContentOriginCountry.ContentOriginCountryId.class)
+@Getter
+@Setter
+@NoArgsConstructor
 public class ContentOriginCountry {
 
 	@Id
@@ -32,38 +38,6 @@ public class ContentOriginCountry {
 
 	@Column(name = "sort_order", nullable = false)
 	private int sortOrder;
-
-	public UUID getContentId() {
-		return contentId;
-	}
-
-	public void setContentId(UUID contentId) {
-		this.contentId = contentId;
-	}
-
-	public String getCountryCode() {
-		return countryCode;
-	}
-
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-
-	public Content getContent() {
-		return content;
-	}
-
-	public void setContent(Content content) {
-		this.content = content;
-	}
-
-	public int getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
 
 	public static class ContentOriginCountryId implements Serializable {
 

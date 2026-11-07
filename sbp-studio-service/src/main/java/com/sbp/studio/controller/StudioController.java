@@ -1,9 +1,11 @@
 package com.sbp.studio.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sbp.common.response.ApiResponse;
 import com.sbp.common.response.ApiResponseFactory;
@@ -28,14 +32,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping({ "", "/" })
 public class StudioController {
 
 	private final StudioService studioService;
 
-	public StudioController(StudioService studioService) {
-		this.studioService = studioService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<StudioResponse>>> list(
@@ -87,6 +90,16 @@ public class StudioController {
 			HttpServletRequest request) {
 		StudioResponse data = studioService.patch(studioId, body);
 		return ResponseEntity.ok(success("STUDIO_PATCHED", "Studio updated", data, request));
+	}
+
+	@PostMapping(value = "/{studioId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ApiResponse<StudioResponse>> uploadLogo(
+			@PathVariable UUID studioId,
+			@RequestPart("file") MultipartFile file,
+			@RequestParam(defaultValue = "system") String actor,
+			HttpServletRequest request) throws java.io.IOException {
+		StudioResponse data = studioService.uploadLogo(studioId, file, actor);
+		return ResponseEntity.ok(success("STUDIO_LOGO_UPLOADED", "Studio logo uploaded", data, request));
 	}
 
 	@DeleteMapping("/{studioId}")

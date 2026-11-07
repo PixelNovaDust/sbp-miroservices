@@ -1,5 +1,6 @@
 package com.sbp.admin.service;
 
+import lombok.RequiredArgsConstructor;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.time.Instant;
@@ -18,16 +19,14 @@ import com.sbp.admin.dto.MonitoringStatus;
 import com.sbp.admin.util.TargetHostValidator;
 
 @Service
+@RequiredArgsConstructor
+
 public class InfrastructureHealthService {
 
 	private final MonitoringProperties properties;
 
 	private final TargetHostValidator hostValidator;
 
-	public InfrastructureHealthService(MonitoringProperties properties, TargetHostValidator hostValidator) {
-		this.properties = properties;
-		this.hostValidator = hostValidator;
-	}
 
 	public InfrastructureResponse listComponents() {
 		List<InfrastructureComponent> components = new ArrayList<>();

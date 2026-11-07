@@ -25,13 +25,15 @@ public record PersonProfileResponse(
 		String careerStatus,
 		Integer retiredYear,
 		Integer lastActiveYear,
-		String profilePath,
-		String backdropPath,
+		UUID profileFileId,
+		UUID backdropFileId,
 		String contentType,
 		List<String> aliases,
 		Measurements measurements,
 		List<TaxonomyItem> categories,
+		List<TaxonomyItem> genre,
 		List<TaxonomyItem> tags,
+		List<TaxonomyItem> moodTags,
 		List<TaxonomyItem> specialties,
 		List<TaxonomyItem> roles,
 		Career career,
@@ -61,7 +63,9 @@ public record PersonProfileResponse(
 			String details,
 			List<String> highlights,
 			List<String> knownFor,
-			List<FeaturedContentItem> featuredContent) {
+			List<FeaturedContentItem> featuredContent,
+			String previousProfession,
+			Integer startYear) {
 	}
 
 	public record FeaturedContentItem(UUID contentId, String title, String slug) {

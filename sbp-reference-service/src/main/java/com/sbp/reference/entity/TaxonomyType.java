@@ -6,9 +6,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "taxonomy_types")
+@Getter
+@Setter
+@NoArgsConstructor
 public class TaxonomyType {
 
 	@Id
@@ -35,21 +41,5 @@ public class TaxonomyType {
 
 	@Column(name = "updated_by", nullable = false, length = 100)
 	private String updatedBy;
-
-	public String getCode() {
-		return code;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public int getSortOrder() {
-		return sortOrder;
-	}
 
 }

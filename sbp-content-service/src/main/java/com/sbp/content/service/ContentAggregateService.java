@@ -1,5 +1,6 @@
 package com.sbp.content.service;
 
+import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sbp.common.client.FileStorageServiceClient;
+import com.sbp.common.client.MediaUrlSupport;
 import com.sbp.content.client.PersonServiceClient;
 import com.sbp.content.client.ReferenceServiceClient;
 import com.sbp.content.client.StudioServiceClient;
@@ -38,6 +41,7 @@ import com.sbp.content.repository.ContentStudioLinkRepository;
 import com.sbp.content.repository.ContentTaxonomyLinkRepository;
 import com.sbp.content.util.ContentDefaults;
 
+@RequiredArgsConstructor
 @Service
 public class ContentAggregateService {
 
@@ -61,28 +65,8 @@ public class ContentAggregateService {
 
 	private final PersonServiceClient personServiceClient;
 
-	public ContentAggregateService(
-			ContentSupportService contentSupportService,
-			ContentOriginCountryRepository originCountryRepository,
-			ContentStudioLinkRepository studioLinkRepository,
-			ContentCastLinkRepository castLinkRepository,
-			ContentTaxonomyLinkRepository taxonomyLinkRepository,
-			ContentAssetRepository assetRepository,
-			ContentAssetKeyRepository assetKeyRepository,
-			ReferenceServiceClient referenceServiceClient,
-			StudioServiceClient studioServiceClient,
-			PersonServiceClient personServiceClient) {
-		this.contentSupportService = contentSupportService;
-		this.originCountryRepository = originCountryRepository;
-		this.studioLinkRepository = studioLinkRepository;
-		this.castLinkRepository = castLinkRepository;
-		this.taxonomyLinkRepository = taxonomyLinkRepository;
-		this.assetRepository = assetRepository;
-		this.assetKeyRepository = assetKeyRepository;
-		this.referenceServiceClient = referenceServiceClient;
-		this.studioServiceClient = studioServiceClient;
-		this.personServiceClient = personServiceClient;
-	}
+	private final FileStorageServiceClient fileStorageServiceClient;
+
 
 	@Transactional(readOnly = true)
 	public ContentDetailResponse getDetail(UUID contentId) {
@@ -103,7 +87,6 @@ public class ContentAggregateService {
 				content.isAdult(),
 				assets,
 				audit,
-				content.getBackdropPath(),
 				casts,
 				content.getContentRating(),
 				content.getContentType(),
@@ -113,6 +96,11 @@ public class ContentAggregateService {
 				originCountry,
 				content.getOverview(),
 				content.getPosterPath(),
+				content.getBackdropPath(),
+				content.getPosterFileId(),
+				content.getBackdropFileId(),
+				MediaUrlSupport.resolveOrNull(fileStorageServiceClient, content.getPosterFileId()),
+				MediaUrlSupport.resolveOrNull(fileStorageServiceClient, content.getBackdropFileId()),
 				content.getReleaseDate(),
 				content.getRuntimeMinutes(),
 				ContentDefaults.defaultStats(),
@@ -170,7 +158,11 @@ public class ContentAggregateService {
 		for (ContentAsset asset : assets) {
 			List<ContentAssetKey> keys = assetKeyRepository.findByAsset_IdOrderBySortOrderAsc(asset.getId());
 			List<ContentAssetKeyResponse> keyResponses = keys.stream()
-					.map(k -> new ContentAssetKeyResponse(k.getId(), k.getStorageKey()))
+					.map(k -> new ContentAssetKeyResponse(
+							k.getId(),
+							k.getStorageKey(),
+							k.getStorageFileId(),
+							MediaUrlSupport.resolveOrNull(fileStorageServiceClient, k.getStorageFileId())))
 					.toList();
 			result.add(new ContentAssetResponse(asset.getAssetType(), keyResponses));
 		}

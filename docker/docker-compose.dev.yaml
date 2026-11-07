@@ -120,6 +120,24 @@ services:
       timeout: 5s
       retries: 5
 
+  file-storage-db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${FILE_STORAGE_DB_NAME}
+      POSTGRES_USER: ${FILE_STORAGE_DB_USERNAME}
+      POSTGRES_PASSWORD: ${FILE_STORAGE_DB_PASSWORD}
+      TZ: ${APP_TIMEZONE:-Asia/Kolkata}
+    ports:
+      - ${FILE_STORAGE_DB_PORT}:5432
+    volumes:
+      - sbp-file-storage-db-dev-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ${FILE_STORAGE_DB_USERNAME} -d ${FILE_STORAGE_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   sbp-migration:
     build:
       context: ..
@@ -127,7 +145,7 @@ services:
     restart: no
     environment:
       APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
-      LIQUIBASE_CLEAR_CHECKSUMS: ${LIQUIBASE_CLEAR_CHECKSUMS:-}
+      SBP_CLEAR_LIQUIBASE_CHECKSUMS: ${SBP_CLEAR_LIQUIBASE_CHECKSUMS:-}
       AUTH_DB_HOST: auth-db
       AUTH_DB_PORT: 5432
       AUTH_DB_NAME: ${AUTH_DB_NAME}
@@ -158,6 +176,11 @@ services:
       REFERENCE_DB_NAME: ${REFERENCE_DB_NAME}
       REFERENCE_DB_USERNAME: ${REFERENCE_DB_USERNAME}
       REFERENCE_DB_PASSWORD: ${REFERENCE_DB_PASSWORD}
+      FILE_STORAGE_DB_HOST: file-storage-db
+      FILE_STORAGE_DB_PORT: 5432
+      FILE_STORAGE_DB_NAME: ${FILE_STORAGE_DB_NAME}
+      FILE_STORAGE_DB_USERNAME: ${FILE_STORAGE_DB_USERNAME}
+      FILE_STORAGE_DB_PASSWORD: ${FILE_STORAGE_DB_PASSWORD}
     depends_on:
       auth-db:
         condition: service_healthy
@@ -170,6 +193,8 @@ services:
       content-db:
         condition: service_healthy
       reference-db:
+        condition: service_healthy
+      file-storage-db:
         condition: service_healthy
 
   prometheus:
@@ -269,6 +294,7 @@ services:
       PERSON_DB_PASSWORD: ${PERSON_DB_PASSWORD}
       REFERENCE_SERVICE_URL: http://sbp-reference-service:8087
       STUDIO_SERVICE_URL: http://sbp-studio-service:8085
+      FILE_STORAGE_SERVICE_URL: http://sbp-file-storage-service:8088
     ports:
       - ${PERSON_PORT:-8084}:8084
       - ${PERSON_MANAGEMENT_PORT:-9084}:9084
@@ -301,6 +327,7 @@ services:
       STUDIO_DB_NAME: ${STUDIO_DB_NAME}
       STUDIO_DB_USERNAME: ${STUDIO_DB_USERNAME}
       STUDIO_DB_PASSWORD: ${STUDIO_DB_PASSWORD}
+      FILE_STORAGE_SERVICE_URL: http://sbp-file-storage-service:8088
     ports:
       - ${STUDIO_PORT:-8085}:8085
       - ${STUDIO_MANAGEMENT_PORT:-9085}:9085
@@ -329,6 +356,10 @@ services:
       CONTENT_DB_NAME: ${CONTENT_DB_NAME}
       CONTENT_DB_USERNAME: ${CONTENT_DB_USERNAME}
       CONTENT_DB_PASSWORD: ${CONTENT_DB_PASSWORD}
+      REFERENCE_SERVICE_URL: http://sbp-reference-service:8087
+      STUDIO_SERVICE_URL: http://sbp-studio-service:8085
+      PERSON_SERVICE_URL: http://sbp-person-service:8084
+      FILE_STORAGE_SERVICE_URL: http://sbp-file-storage-service:8088
     ports:
       - ${CONTENT_PORT:-8086}:8086
       - ${CONTENT_MANAGEMENT_PORT:-9086}:9086
@@ -357,6 +388,7 @@ services:
       REFERENCE_DB_NAME: ${REFERENCE_DB_NAME}
       REFERENCE_DB_USERNAME: ${REFERENCE_DB_USERNAME}
       REFERENCE_DB_PASSWORD: ${REFERENCE_DB_PASSWORD}
+      FILE_STORAGE_SERVICE_URL: http://sbp-file-storage-service:8088
     ports:
       - ${REFERENCE_PORT:-8087}:8087
       - ${REFERENCE_MANAGEMENT_PORT:-9087}:9087
@@ -366,6 +398,48 @@ services:
       sbp-migration:
         condition: service_completed_successfully
       sbp-discovery-server:
+        condition: service_started
+
+  sbp-file-storage-service:
+    build:
+      context: ..
+      dockerfile: sbp-file-storage-service/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
+      EUREKA_SERVER_URL: http://sbp-discovery-server:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: sbp-file-storage-service
+      FILE_STORAGE_PORT: ${FILE_STORAGE_PORT:-8088}
+      FILE_STORAGE_MANAGEMENT_PORT: ${FILE_STORAGE_MANAGEMENT_PORT:-9088}
+      FILE_STORAGE_DB_HOST: file-storage-db
+      FILE_STORAGE_DB_PORT: 5432
+      FILE_STORAGE_DB_NAME: ${FILE_STORAGE_DB_NAME}
+      FILE_STORAGE_DB_USERNAME: ${FILE_STORAGE_DB_USERNAME}
+      FILE_STORAGE_DB_PASSWORD: ${FILE_STORAGE_DB_PASSWORD}
+      SBP_STORAGE_ENABLED: ${SBP_STORAGE_ENABLED:-true}
+      SBP_STORAGE_PROVIDER: ${SBP_STORAGE_PROVIDER:-S3}
+      SBP_STORAGE_REGION: ${SBP_STORAGE_REGION:-us-east-1}
+      SBP_STORAGE_DEFAULT_BUCKET: ${SBP_STORAGE_DEFAULT_BUCKET:-}
+      SBP_STORAGE_ENDPOINT: ${SBP_STORAGE_ENDPOINT:-}
+      SBP_STORAGE_KEY_PREFIX: ${SBP_STORAGE_KEY_PREFIX:-}
+      SBP_STORAGE_PATH_STYLE: ${SBP_STORAGE_PATH_STYLE:-false}
+      SBP_STORAGE_PRESIGN_UPLOAD_TTL: ${SBP_STORAGE_PRESIGN_UPLOAD_TTL:-PT15M}
+      SBP_STORAGE_PRESIGN_DOWNLOAD_TTL: ${SBP_STORAGE_PRESIGN_DOWNLOAD_TTL:-PT1H}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_REGION: ${AWS_REGION:-${SBP_STORAGE_REGION:-us-east-1}}
+    ports:
+      - ${FILE_STORAGE_PORT:-8088}:8088
+      - ${FILE_STORAGE_MANAGEMENT_PORT:-9088}:9088
+    depends_on:
+      file-storage-db:
+        condition: service_healthy
+      sbp-migration:
+        condition: service_completed_successfully
+      sbp-discovery-server:
+        condition: service_started
+      sbp-api-gateway:
         condition: service_started
 
   sbp-admin-service:
@@ -394,7 +468,7 @@ services:
       MONITORING_HEALTH_CONNECT_TIMEOUT_MS: ${MONITORING_HEALTH_CONNECT_TIMEOUT_MS:-2000}
       MONITORING_HEALTH_READ_TIMEOUT_MS: ${MONITORING_HEALTH_READ_TIMEOUT_MS:-3000}
       MONITORING_CACHE_TTL_SECONDS: ${MONITORING_CACHE_TTL_SECONDS:-15}
-      MONITORING_TRUSTED_HOST_SUFFIXES: ${MONITORING_TRUSTED_HOST_SUFFIXES:-sbp-auth-service,sbp-user-service,sbp-person-service,sbp-studio-service,sbp-content-service,sbp-api-gateway,sbp-admin-service,sbp-discovery-server,auth-db,user-db,person-db,studio-db,content-db,localhost,127.0.0.1}
+      MONITORING_TRUSTED_HOST_SUFFIXES: ${MONITORING_TRUSTED_HOST_SUFFIXES:-sbp-auth-service,sbp-user-service,sbp-person-service,sbp-studio-service,sbp-content-service,sbp-reference-service,sbp-file-storage-service,sbp-api-gateway,sbp-admin-service,sbp-discovery-server,auth-db,user-db,person-db,studio-db,content-db,reference-db,file-storage-db,localhost,127.0.0.1}
     ports:
       - ${ADMIN_PORT:-8083}:8083
       - ${ADMIN_MANAGEMENT_PORT:-9083}:9083
@@ -449,3 +523,5 @@ volumes:
     name: sbp-content-db-dev-data
   sbp-reference-db-dev-data:
     name: sbp-reference-db-dev-data
+  sbp-file-storage-db-dev-data:
+    name: sbp-file-storage-db-dev-data

@@ -1,5 +1,6 @@
 package com.sbp.auth.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,14 +17,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/invitations")
 public class InvitationController {
 
 	private final InvitationService invitationService;
 
-	public InvitationController(InvitationService invitationService) {
-		this.invitationService = invitationService;
-	}
 
 	@PostMapping("/check")
 	public ResponseEntity<ApiResponse<InvitationCheckResult>> check(

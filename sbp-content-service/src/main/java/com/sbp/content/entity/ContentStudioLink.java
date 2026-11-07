@@ -12,10 +12,16 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "content_studios")
 @IdClass(ContentStudioLink.ContentStudioLinkId.class)
+@Getter
+@Setter
+@NoArgsConstructor
 public class ContentStudioLink {
 
 	@Id
@@ -32,38 +38,6 @@ public class ContentStudioLink {
 
 	@Column(name = "sort_order", nullable = false)
 	private int sortOrder;
-
-	public UUID getContentId() {
-		return contentId;
-	}
-
-	public void setContentId(UUID contentId) {
-		this.contentId = contentId;
-	}
-
-	public UUID getStudioId() {
-		return studioId;
-	}
-
-	public void setStudioId(UUID studioId) {
-		this.studioId = studioId;
-	}
-
-	public Content getContent() {
-		return content;
-	}
-
-	public void setContent(Content content) {
-		this.content = content;
-	}
-
-	public int getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
 
 	public static class ContentStudioLinkId implements Serializable {
 

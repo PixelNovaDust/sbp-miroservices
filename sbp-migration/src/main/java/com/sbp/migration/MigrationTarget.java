@@ -27,6 +27,10 @@ record MigrationTarget(String changelogPath, String jdbcUrl, String username, St
 		return fromEnv("REFERENCE", "migration/reference/db.changelog-master.yaml");
 	}
 
+	static MigrationTarget fileFromEnv() {
+		return fromEnv("FILE_STORAGE", "migration/file/db.changelog-master.yaml");
+	}
+
 	private static MigrationTarget fromEnv(String prefix, String changelogPath) {
 		String host = require(prefix + "_DB_HOST");
 		String port = env(prefix + "_DB_PORT", "5432");

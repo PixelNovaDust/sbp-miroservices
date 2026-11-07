@@ -8,6 +8,7 @@ public record StudioPatchRequest(
 		@Size(max = 150) String slug,
 		String website,
 		String description,
+		String svg,
 		Boolean active,
 		@NotBlank @Size(max = 100) String actor) {
 }

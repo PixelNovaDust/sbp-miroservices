@@ -4,31 +4,33 @@ All public business APIs are intended to be called through the **API Gateway** a
 
 ## Gateway routes
 
-| Gateway prefix                | Service (Eureka)        |
-| ----------------------------- | ----------------------- |
-| `/api/v1/auth/**`             | `sbp-auth-service`      |
-| `/api/v1/users/**`            | `sbp-user-service`      |
-| `/api/v1/persons/**`          | `sbp-person-service`    |
-| `/api/v1/studios/**`          | `sbp-studio-service`    |
-| `/api/v1/content/**`          | `sbp-content-service`   |
-| `/api/v1/taxonomies/**`       | `sbp-reference-service` |
-| `/api/v1/social-platforms/**` | `sbp-reference-service` |
-| `/api/v1/admin/**`            | `sbp-admin-service`     |
+| Gateway prefix                | Service (Eureka)           |
+| ----------------------------- | -------------------------- |
+| `/api/v1/auth/**`             | `sbp-auth-service`         |
+| `/api/v1/users/**`            | `sbp-user-service`         |
+| `/api/v1/persons/**`          | `sbp-person-service`       |
+| `/api/v1/studios/**`          | `sbp-studio-service`       |
+| `/api/v1/content/**`          | `sbp-content-service`      |
+| `/api/v1/taxonomies/**`       | `sbp-reference-service`    |
+| `/api/v1/social-platforms/**` | `sbp-reference-service`    |
+| `/api/v1/files/**`            | `sbp-file-storage-service` |
+| `/api/v1/admin/**`            | `sbp-admin-service`        |
 
 **Not routed on the gateway:** reference internal APIs (`/internal/v1/...`) and studio internal GET (`/api/v1/studios/internal/{studioId}`). Use service-to-service HTTP (see [Internal APIs](#internal-apis-service-to-service)).
 
 ## Default dev ports (direct)
 
-| Service   | App port | Management | Context path                                          |
-| --------- | -------- | ---------- | ----------------------------------------------------- |
-| Gateway   | 8080     | 9080       | —                                                     |
-| Auth      | 8081     | 9081       | `/api/v1/auth`                                        |
-| User      | 8082     | 9082       | `/api/v1/users`                                       |
-| Admin     | 8083     | 9083       | `/api/v1/admin`                                       |
-| Person    | 8084     | 9084       | `/api/v1/persons`                                     |
-| Studio    | 8085     | 9085       | `/api/v1/studios`                                     |
-| Content   | 8086     | 9086       | `/api/v1/content`                                     |
-| Reference | 8087     | 9087       | _(none — paths include `/api/v1/...` on controllers)_ |
+| Service      | App port | Management | Context path                                          |
+| ------------ | -------- | ---------- | ----------------------------------------------------- |
+| Gateway      | 8080     | 9080       | —                                                     |
+| Auth         | 8081     | 9081       | `/api/v1/auth`                                        |
+| User         | 8082     | 9082       | `/api/v1/users`                                       |
+| Admin        | 8083     | 9083       | `/api/v1/admin`                                       |
+| Person       | 8084     | 9084       | `/api/v1/persons`                                     |
+| Studio       | 8085     | 9085       | `/api/v1/studios`                                     |
+| Content      | 8086     | 9086       | `/api/v1/content`                                     |
+| Reference    | 8087     | 9087       | _(none — paths include `/api/v1/...` on controllers)_ |
+| File storage | 8088     | 9088       | `/api/v1/files`                                       |
 
 Env vars: `env/.env.dev.example`.
 
@@ -67,17 +69,21 @@ Base path: **`/api/v1/persons`**.
 
 ### Person
 
-| Method | Path                  | Description                                            |
-| ------ | --------------------- | ------------------------------------------------------ |
-| GET    | `/health`             | Health                                                 |
-| GET    | `/ready`              | Readiness (database check)                             |
-| GET    | `/`                   | List persons                                           |
-| GET    | `/{personId}`         | Get person **full profile** (aggregated JSON document) |
-| POST   | `/`                   | Create person                                          |
-| PUT    | `/{personId}`         | Replace person profile                                 |
-| PATCH  | `/{personId}`         | Partial update                                         |
-| DELETE | `/{personId}`         | Soft deactivate                                        |
-| POST   | `/{personId}/restore` | Restore after soft delete                              |
+| Method | Path                         | Description                                                |
+| ------ | ---------------------------- | ---------------------------------------------------------- |
+| GET    | `/health`                    | Health                                                     |
+| GET    | `/ready`                     | Readiness (database check)                                 |
+| GET    | `/`                          | List persons                                               |
+| GET    | `/{personId}`                | Get person **full profile** (aggregated JSON document)     |
+| POST   | `/`                          | Create person                                              |
+| PUT    | `/{personId}`                | Replace person profile                                     |
+| PATCH  | `/{personId}`                | Partial update                                             |
+| DELETE | `/{personId}`                | Soft deactivate                                            |
+| POST   | `/{personId}/restore`        | Restore after soft delete                                  |
+| POST   | `/{personId}/profile-image`  | Upload profile image (`multipart/form-data`, part `file`)  |
+| POST   | `/{personId}/backdrop-image` | Upload backdrop image (`multipart/form-data`, part `file`) |
+
+**Media:** `profileFileId` / `backdropFileId` are UUIDs on the person row (`persons.profile_file_id` / `persons.backdrop_file_id` in the **person DB**), each pointing at **`file_storage.file_id`** in the **file-storage DB**. Resolve the stored path via **`GET /api/v1/files/{fileId}`** (`objectKey`). Upload: **`POST /{personId}/profile-image`** and **`.../backdrop-image`**, or assign file IDs on create/update/patch.
 
 **List filters (query params):**
 
@@ -87,12 +93,12 @@ Base path: **`/api/v1/persons`**.
 | `active`   | `?active=true`   |
 | `verified` | `?verified=true` |
 
-`GET /{personId}` enriches data from **reference** (taxonomies including **ROLE** → profile `roles`, plus categories/tags/specialties, social platform slugs) and **studio** (studio names for `career.knownFor`) via internal HTTP — not cross-database SQL.
+`GET /{personId}` enriches data from **reference** (entity taxonomies → profile buckets by **`taxonomies.type`**: **`categories`** = `CATEGORY`, **`genre`** = `GENRE`, **`tags`** = `TAG`, **`moodTags`** = `MOOD_TAG`, **`specialties`** = `SPECIALTIES`, **`roles`** = `ROLE`) and **studio** (studio names for `career.knownFor`) via internal HTTP — not cross-database SQL.
 
 **Create/update body (career & roles):**
 
 - **`roles`** — assign via `POST /{personId}/taxonomies` using taxonomies with `type = ROLE` (not a JSON field on the person row).
-- **`career`** — `{ "details": "...", "highlights": ["..."] }`; `knownFor` is **read-only** on GET (from studio links). `featuredContent` lists `{ contentId, title?, slug? }` from `person_featured_content` (title/slug reserved for future content-service enrichment). Timeline: `debutYear`, `careerStatus` (`ACTIVE` | `RETIRED` | `HIATUS` | `DEBUT`), optional `retiredYear`, `lastActiveYear`.
+- **`career`** — `{ "details": "...", "highlights": ["..."], "previousProfession": "...", "startYear": 2008 }`; `knownFor` is **read-only** on GET (from studio links). `featuredContent` lists `{ contentId, title?, slug? }` from `person_featured_content` (title/slug enriched from content-service when available). Timeline: `debutYear`, `careerStatus` (`ACTIVE` | `RETIRED` | `HIATUS` | `DEBUT`), optional `retiredYear`, `lastActiveYear`. Profile **`specialties`** are taxonomies with `type = SPECIALTIES` (assign via `POST /{personId}/taxonomies`).
 - Profile **`stats`** includes counts (studios, social accounts, taxonomy assignments, featured content links).
 
 ### Aliases
@@ -158,17 +164,20 @@ Person service does **not** create taxonomy definitions; it assigns **existing**
 
 Base path: **`/api/v1/studios`**.
 
-| Method | Path              | Description                 |
-| ------ | ----------------- | --------------------------- |
-| GET    | `/health`         | Health                      |
-| GET    | `/ready`          | Readiness (database check)  |
-| GET    | `/`               | List studios                |
-| GET    | `/by-name/{name}` | Get by name                 |
-| GET    | `/{studioId}`     | Get by id                   |
-| POST   | `/`               | Create studio               |
-| PUT    | `/{studioId}`     | Full update                 |
-| PATCH  | `/{studioId}`     | Partial update              |
-| DELETE | `/{studioId}`     | Deactivate (`active=false`) |
+| Method | Path               | Description                                      |
+| ------ | ------------------ | ------------------------------------------------ |
+| GET    | `/health`          | Health                                           |
+| GET    | `/ready`           | Readiness (database check)                       |
+| GET    | `/`                | List studios                                     |
+| GET    | `/by-name/{name}`  | Get by name                                      |
+| GET    | `/{studioId}`      | Get by id                                        |
+| POST   | `/`                | Create studio                                    |
+| PUT    | `/{studioId}`      | Full update                                      |
+| PATCH  | `/{studioId}`      | Partial update                                   |
+| DELETE | `/{studioId}`      | Deactivate (`active=false`)                      |
+| POST   | `/{studioId}/logo` | Upload logo (`multipart/form-data`, part `file`) |
+
+**Media:** `logo` (UUID → file registry), optional inline `svg`, and `logoUrl` on reads.
 
 **List filters:**
 
@@ -216,14 +225,17 @@ Taxonomy `type` values include **`CATEGORY`**, **`TAG`**, **`SPECIALTIES`**, **`
 
 ### Social platforms (public, gateway)
 
-| Method | Path                                      | Description    |
-| ------ | ----------------------------------------- | -------------- |
-| GET    | `/api/v1/social-platforms`                | List platforms |
-| GET    | `/api/v1/social-platforms/by-slug/{slug}` | Get by slug    |
-| GET    | `/api/v1/social-platforms/{platformId}`   | Get by id      |
-| POST   | `/api/v1/social-platforms`                | Create         |
-| PUT    | `/api/v1/social-platforms/{platformId}`   | Update         |
-| DELETE | `/api/v1/social-platforms/{platformId}`   | Deactivate     |
+| Method | Path                                         | Description                                      |
+| ------ | -------------------------------------------- | ------------------------------------------------ |
+| GET    | `/api/v1/social-platforms`                   | List platforms                                   |
+| GET    | `/api/v1/social-platforms/by-slug/{slug}`    | Get by slug                                      |
+| GET    | `/api/v1/social-platforms/{platformId}`      | Get by id                                        |
+| POST   | `/api/v1/social-platforms`                   | Create                                           |
+| PUT    | `/api/v1/social-platforms/{platformId}`      | Update                                           |
+| DELETE | `/api/v1/social-platforms/{platformId}`      | Deactivate                                       |
+| POST   | `/api/v1/social-platforms/{platformId}/logo` | Upload logo (`multipart/form-data`, part `file`) |
+
+**Media:** `logo`, `svg` (inline markup; legacy `svgIcon` mirrored on write), `logoUrl` on reads.
 
 **List filters:** `?name=`, `?active=true`
 
@@ -252,22 +264,24 @@ Use from other microservices (e.g. person → reference/studio). Configure base 
 
 ## Content (`sbp-content-service`)
 
-Base path: **`/api/v1/content`**. Responses use **`ApiResponse`**. Detail payloads match the catalog shape documented in [CONTENT-DATABASE.md](CONTENT-DATABASE.md).
+Base path: **`/api/v1/content`**. Responses use **`ApiResponse`**. Detail payloads match the catalog shape documented in [CONTENT-DATABASE.md](db/CONTENT-DATABASE.md).
 
-| Method | Path                     | Description                                                                |
-| ------ | ------------------------ | -------------------------------------------------------------------------- |
-| GET    | `/api/v1/content/health` | Health                                                                     |
-| GET    | `/api/v1/content`        | List (optional `title`, `contentType`, `status`, `visibility`)             |
-| GET    | `/api/v1/content/{id}`   | Full detail (studios, cast, taxonomies, assets enriched via internal HTTP) |
-| POST   | `/api/v1/content`        | Create catalog entry + graph                                               |
-| PUT    | `/api/v1/content/{id}`   | Replace scalars and entire link/asset graph                                |
-| DELETE | `/api/v1/content/{id}`   | Hard delete (cascade link tables)                                          |
+| Method | Path                            | Description                                                                |
+| ------ | ------------------------------- | -------------------------------------------------------------------------- |
+| GET    | `/api/v1/content/health`        | Health                                                                     |
+| GET    | `/api/v1/content`               | List (optional `title`, `contentType`, `status`, `visibility`)             |
+| GET    | `/api/v1/content/{id}`          | Full detail (studios, cast, taxonomies, assets enriched via internal HTTP) |
+| POST   | `/api/v1/content`               | Create catalog entry + graph                                               |
+| PUT    | `/api/v1/content/{id}`          | Replace scalars and entire link/asset graph                                |
+| DELETE | `/api/v1/content/{id}`          | Hard delete (cascade link tables)                                          |
+| POST   | `/api/v1/content/{id}/poster`   | Upload poster (`multipart/form-data`, part `file`)                         |
+| POST   | `/api/v1/content/{id}/backdrop` | Upload backdrop (`multipart/form-data`, part `file`)                       |
 
-**Write body (`ContentWriteRequest`):** scalars (`title`, `tagline`, `overview`, `adult`, `contentType`, `contentRating`, optional `status` / `visibility`, `originalLanguage`, `originCountry[]`, `releaseDate`, `runtime`, paths), plus ID lists: `studioIds`, `castPersonIds`, `tagIds`, `genreIds`, `moodTagIds`, and `assets[]` with `type` (`CLIP` \| `TRAILER` \| `BTS` \| `TEASER`) and `keys[]` `{ "value": "<storage path>" }`.
+**Write body (`ContentWriteRequest`):** scalars (`title`, `tagline`, `overview`, `adult`, `contentType`, `contentRating`, optional `status` / `visibility`, `originalLanguage`, `originCountry[]`, `releaseDate`, `runtime`, legacy paths, optional `posterFileId` / `backdropFileId`), plus ID lists: `studioIds`, `castPersonIds`, `tagIds`, `genreIds`, `moodTagIds`, and `assets[]` with `type` (`CLIP` \| `TRAILER` \| `BTS` \| `TEASER`) and `keys[]` `{ "value": "<storage path>", "storageFileId": "<uuid optional>" }`.
 
-**Read-only enrichment on GET:** `studios`, `casts`, `tags`, `genre`, `moodTags` include `{ id, name }` from studio, person, and reference services. **`stats`** defaults to `{ "averageRating": 0, "totalLikes": 0, "totalViews": 0 }` (not stored yet).
+**Read-only enrichment on GET:** `posterUrl` / `backdropUrl` from file-storage; asset keys may include `downloadUrl` when `storageFileId` is set. `studios`, `casts`, `tags`, `genre`, `moodTags` include `{ id, name }` from studio, person, and reference services. **`stats`** defaults to `{ "averageRating": 0, "totalLikes": 0, "totalViews": 0 }` (not stored yet).
 
-**Service clients (content JVM):** `REFERENCE_SERVICE_URL`, `STUDIO_SERVICE_URL`, `PERSON_SERVICE_URL` (see `env/.env.dev.example`).
+**Service clients (content JVM):** `REFERENCE_SERVICE_URL`, `STUDIO_SERVICE_URL`, `PERSON_SERVICE_URL`, `FILE_STORAGE_SERVICE_URL` (see `env/.env.dev.example`).
 
 ---
 

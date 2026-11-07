@@ -1,5 +1,6 @@
 package com.sbp.person.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/{personId}/physical-attributes")
 public class PersonPhysicalAttributesController {
 
 	private final PersonPhysicalAttributesService physicalAttributesService;
 
-	public PersonPhysicalAttributesController(PersonPhysicalAttributesService physicalAttributesService) {
-		this.physicalAttributesService = physicalAttributesService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<PersonPhysicalAttributesResponse>> get(

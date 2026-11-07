@@ -1,8 +1,12 @@
 package com.sbp.content.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.Getter;
+import lombok.Setter;
 
 @ConfigurationProperties(prefix = "sbp.clients")
+@Getter
+@Setter
 public class ClientProperties {
 
 	private String referenceBaseUrl = "http://localhost:8087";
@@ -11,28 +15,6 @@ public class ClientProperties {
 
 	private String personBaseUrl = "http://localhost:8084";
 
-	public String getReferenceBaseUrl() {
-		return referenceBaseUrl;
-	}
-
-	public void setReferenceBaseUrl(String referenceBaseUrl) {
-		this.referenceBaseUrl = referenceBaseUrl;
-	}
-
-	public String getStudioBaseUrl() {
-		return studioBaseUrl;
-	}
-
-	public void setStudioBaseUrl(String studioBaseUrl) {
-		this.studioBaseUrl = studioBaseUrl;
-	}
-
-	public String getPersonBaseUrl() {
-		return personBaseUrl;
-	}
-
-	public void setPersonBaseUrl(String personBaseUrl) {
-		this.personBaseUrl = personBaseUrl;
-	}
+	private String fileStorageBaseUrl = "http://localhost:8088";
 
 }

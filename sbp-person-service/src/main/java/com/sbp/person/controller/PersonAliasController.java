@@ -1,5 +1,6 @@
 package com.sbp.person.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,14 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/{personId}/aliases")
 public class PersonAliasController {
 
 	private final PersonAliasService personAliasService;
 
-	public PersonAliasController(PersonAliasService personAliasService) {
-		this.personAliasService = personAliasService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<PersonAliasResponse>>> list(

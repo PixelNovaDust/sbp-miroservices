@@ -2,6 +2,7 @@ package com.sbp.person.dto;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,8 +24,8 @@ public record PersonUpdateRequest(
 		@Size(max = 50) String careerStatus,
 		Short retiredYear,
 		Short lastActiveYear,
-		String profilePath,
-		String backdropPath,
+		UUID profileFileId,
+		UUID backdropFileId,
 		PersonCareerInput career,
 		Map<String, Object> sourceMetadata,
 		@NotBlank @Size(max = 100) String actor) {

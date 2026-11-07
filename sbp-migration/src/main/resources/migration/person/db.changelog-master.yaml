@@ -35,3 +35,30 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: false
             stripComments: true
+  - changeSet:
+      id: person-005-career-previous-profession
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V005__person_career_previous_profession.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: person-006-media-file-ids
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V006__person_media_file_ids.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: person-007-drop-media-paths
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V007__drop_person_media_paths.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

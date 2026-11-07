@@ -13,18 +13,19 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPOutputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Compresses rolled daily log files from the previous calendar month into {@code *.tar.gz}
  * under the archive directory.
  */
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class LogArchiveService {
-
-	private static final Logger log = LoggerFactory.getLogger(LogArchiveService.class);
 
 	private static final DateTimeFormatter MONTH = DateTimeFormatter.ofPattern("yyyy-MM", Locale.ROOT);
 
@@ -36,9 +37,6 @@ public class LogArchiveService {
 
 	private final SbpLoggingProperties properties;
 
-	public LogArchiveService(SbpLoggingProperties properties) {
-		this.properties = properties;
-	}
 
 	public void archivePreviousMonth() {
 		if (!properties.isMonthlyArchive()) {

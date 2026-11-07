@@ -30,29 +30,29 @@
     {
       "label": "Maven: install sbp-lib-common (Docker)",
       "type": "shell",
-      "command": "docker run --rm -v \"${workspaceFolder}:/ws\" -v \"${env:USERPROFILE}\\.m2:/root/.m2\" -w /ws maven:3.9-eclipse-temurin-17 mvn -q -f sbp-lib-common/pom.xml clean install -DskipTests",
+      "command": "docker run --rm -v \"${workspaceFolder}:/ws\" -v \"${env:USERPROFILE}\\.m2:/root/.m2\" -w /ws maven:3.9-eclipse-temurin-21 mvn -q -f sbp-lib-common/pom.xml clean install -DskipTests",
       "options": { "cwd": "${workspaceFolder}" },
       "group": "build",
       "problemMatcher": []
     },
     {
-      "label": "SBP: infra-dev (PowerShell)",
+      "label": "SBP: up dev -Infra (PowerShell)",
       "type": "shell",
-      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 infra-dev",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 up dev -Infra",
       "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
-      "label": "SBP: migrate-dev (PowerShell)",
+      "label": "SBP: migrate dev (PowerShell)",
       "type": "shell",
-      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 migrate-dev",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 migrate dev",
       "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
-      "label": "SBP: start-dev (PowerShell)",
+      "label": "SBP: up dev (PowerShell)",
       "type": "shell",
-      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 start-dev",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1 up dev",
       "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },

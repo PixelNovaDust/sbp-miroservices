@@ -10,6 +10,11 @@
 	<name>sbp-microservices</name>
 	<description>SBP microservices reactor (build sbp-lib-common before services)</description>
 
+	<properties>
+		<!-- Align all modules on JDK 21 (set java.version in each service POM to match). -->
+		<java.version>21</java.version>
+	</properties>
+
 	<modules>
 		<module>sbp-lib-common</module>
 		<module>sbp-migration</module>
@@ -21,6 +26,7 @@
 		<module>sbp-studio-service</module>
 		<module>sbp-content-service</module>
 		<module>sbp-reference-service</module>
+		<module>sbp-file-storage-service</module>
 		<module>sbp-admin-service</module>
 	</modules>
 

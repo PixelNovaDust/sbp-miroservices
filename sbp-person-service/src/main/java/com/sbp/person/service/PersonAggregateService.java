@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,10 +40,10 @@ import com.sbp.person.repository.PersonSocialAccountRepository;
 import com.sbp.person.repository.PersonStudioRepository;
 import com.sbp.person.util.GenderDisplay;
 
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class PersonAggregateService {
-
-	private static final Logger log = LoggerFactory.getLogger(PersonAggregateService.class);
 
 	private final PersonSupportService personSupportService;
 
@@ -64,28 +65,6 @@ public class PersonAggregateService {
 
 	private final ObjectMapper objectMapper;
 
-	public PersonAggregateService(
-			PersonSupportService personSupportService,
-			PersonAliasRepository personAliasRepository,
-			PersonPhysicalAttributesRepository physicalAttributesRepository,
-			PersonSocialAccountRepository socialAccountRepository,
-			PersonStudioRepository personStudioRepository,
-			PersonCareerHighlightRepository careerHighlightRepository,
-			PersonFeaturedContentRepository featuredContentRepository,
-			ReferenceServiceClient referenceServiceClient,
-			StudioServiceClient studioServiceClient,
-			ObjectMapper objectMapper) {
-		this.personSupportService = personSupportService;
-		this.personAliasRepository = personAliasRepository;
-		this.physicalAttributesRepository = physicalAttributesRepository;
-		this.socialAccountRepository = socialAccountRepository;
-		this.personStudioRepository = personStudioRepository;
-		this.careerHighlightRepository = careerHighlightRepository;
-		this.featuredContentRepository = featuredContentRepository;
-		this.referenceServiceClient = referenceServiceClient;
-		this.studioServiceClient = studioServiceClient;
-		this.objectMapper = objectMapper;
-	}
 
 	@Transactional(readOnly = true)
 	public PersonProfileResponse getProfile(UUID personId) {
@@ -101,7 +80,13 @@ public class PersonAggregateService {
 		List<String> knownFor = loadKnownForStudios(personId);
 		List<String> highlights = loadCareerHighlights(personId);
 		List<FeaturedContentItem> featuredContent = loadFeaturedContent(personId);
-		Career career = new Career(person.getCareerDetails(), highlights, knownFor, featuredContent);
+		Career career = new Career(
+				person.getCareerDetails(),
+				highlights,
+				knownFor,
+				featuredContent,
+				person.getPreviousProfession(),
+				person.getCareerStartYear() != null ? person.getCareerStartYear().intValue() : null);
 		Map<String, Object> stats = buildStats(personId, taxonomies, socialPresence, featuredContent);
 		return new PersonProfileResponse(
 				person.getId(),
@@ -122,13 +107,15 @@ public class PersonAggregateService {
 				person.getCareerStatus(),
 				person.getRetiredYear() != null ? person.getRetiredYear().intValue() : null,
 				person.getLastActiveYear() != null ? person.getLastActiveYear().intValue() : null,
-				person.getProfilePath(),
-				person.getBackdropPath(),
+				person.getProfileFileId(),
+				person.getBackdropFileId(),
 				person.getContentType(),
 				aliases,
 				measurements,
 				taxonomies.categories(),
+				taxonomies.genres(),
 				taxonomies.tags(),
+				taxonomies.moodTags(),
 				taxonomies.specialties(),
 				taxonomies.roles(),
 				career,
@@ -188,7 +175,9 @@ public class PersonAggregateService {
 				byId.put(taxonomy.id(), taxonomy);
 			}
 			List<TaxonomyItem> categories = new ArrayList<>();
+			List<TaxonomyItem> genres = new ArrayList<>();
 			List<TaxonomyItem> tags = new ArrayList<>();
+			List<TaxonomyItem> moodTags = new ArrayList<>();
 			List<TaxonomyItem> specialties = new ArrayList<>();
 			List<TaxonomyItem> roles = new ArrayList<>();
 			for (EntityTaxonomyClientResponse link : links) {
@@ -199,15 +188,17 @@ public class PersonAggregateService {
 				TaxonomyItem item = new TaxonomyItem(taxonomy.id(), taxonomy.name(), taxonomy.slug(), taxonomy.type());
 				String type = taxonomy.type() != null ? taxonomy.type().trim().toUpperCase() : "";
 				switch (type) {
-					case "CATEGORY", "GENRE" -> categories.add(item);
-					case "TAG", "MOOD_TAG" -> tags.add(item);
+					case "CATEGORY" -> categories.add(item);
+					case "GENRE" -> genres.add(item);
+					case "TAG" -> tags.add(item);
+					case "MOOD_TAG" -> moodTags.add(item);
 					case "SPECIALTIES", "SPECIALTY" -> specialties.add(item);
 					case "ROLE" -> roles.add(item);
 					default -> {
 					}
 				}
 			}
-			return new TaxonomyBuckets(categories, tags, specialties, roles);
+			return new TaxonomyBuckets(categories, genres, tags, moodTags, specialties, roles);
 		}
 		catch (RuntimeException ex) {
 			log.debug("Could not load taxonomies for person {}: {}", personId, ex.getMessage());
@@ -257,7 +248,9 @@ public class PersonAggregateService {
 		stats.put(
 				"taxonomyAssignmentCount",
 				taxonomies.categories().size()
+						+ taxonomies.genres().size()
 						+ taxonomies.tags().size()
+						+ taxonomies.moodTags().size()
 						+ taxonomies.specialties().size()
 						+ taxonomies.roles().size());
 		return stats;
@@ -273,12 +266,14 @@ public class PersonAggregateService {
 
 	private record TaxonomyBuckets(
 			List<TaxonomyItem> categories,
+			List<TaxonomyItem> genres,
 			List<TaxonomyItem> tags,
+			List<TaxonomyItem> moodTags,
 			List<TaxonomyItem> specialties,
 			List<TaxonomyItem> roles) {
 
 		static TaxonomyBuckets empty() {
-			return new TaxonomyBuckets(List.of(), List.of(), List.of(), List.of());
+			return new TaxonomyBuckets(List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
 		}
 
 	}

@@ -5,9 +5,10 @@ sbp-microservices/
 ├── pom.xml                    # Maven reactor (build lib-common + services)
 ├── docker/                    # docker-compose.dev.yaml, docker-compose.prod.yaml
 ├── docs/                      # Documentation (CAPS filenames)
+│   └── db/                    # Per-database schema docs + SQL query notes
 ├── env/                       # Profile env files (.env.dev, .env.prod) + *.example templates
 ├── sbp-lib-common/            # Shared library (API response, logging, common utilities)
-├── sbp-migration/             # Liquibase changelogs + migration runner (auth + user DBs)
+├── sbp-migration/             # Liquibase changelogs + migration runner (all service DBs)
 ├── static/email.html          # Plain HTML email form (no backend)
 ├── sbp-discovery-server/      # Eureka registry
 ├── sbp-admin-service/         # Monitoring APIs
@@ -17,6 +18,8 @@ sbp-microservices/
 ├── sbp-person-service/
 ├── sbp-studio-service/
 ├── sbp-content-service/
+├── sbp-file-storage-service/
+├── sbp-reference-service/
 ├── docker/prometheus/         # Prometheus scrape config (static targets)
 ├── docker/grafana/            # Grafana provisioning
 ├── Makefile
@@ -35,3 +38,5 @@ Each service module also includes:
 - `application-prod.properties` — prod datasource, stricter JPA
 - `META-INF/additional-spring-configuration-metadata.json` — IDE property hints
 - `Dockerfile` — multi-stage image build (uses Maven from the build image; no per-module wrapper)
+
+Database schemas: [MIGRATION.md](MIGRATION.md) and [db/](db/).

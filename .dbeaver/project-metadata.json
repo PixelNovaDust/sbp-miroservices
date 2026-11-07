@@ -1,5 +1,5 @@
 {
-    "description":  "SBP microservices dev Postgres connections",
-    "name":  "sbp-miroservices",
-    "id":  "sbp-miroservices"
+  "id": "sbp-miroservices",
+  "name": "sbp-miroservices",
+  "description": "SBP microservices dev Postgres connections"
 }

@@ -27,6 +27,12 @@
   "java.autobuild.enabled": true,
   "java.import.maven.enabled": true,
   "java.import.maven.wrapper.enabled": true,
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-21",
+      "default": true
+    }
+  ],
   "java.import.maven.recursive": true,
   "java.project.importOnFirstTimeStartup": "automatic",
   "java.errors.incompleteClasspath.severity": "warning",

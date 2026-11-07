@@ -18,9 +18,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "contents")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Content {
 
 	@Id
@@ -71,6 +77,12 @@ public class Content {
 	@Column(name = "backdrop_path", columnDefinition = "TEXT")
 	private String backdropPath;
 
+	@Column(name = "poster_file_id")
+	private UUID posterFileId;
+
+	@Column(name = "backdrop_file_id")
+	private UUID backdropFileId;
+
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private Instant createdAt;
 
@@ -80,133 +92,5 @@ public class Content {
 	@Version
 	@Column(nullable = false)
 	private int version;
-
-	public UUID getId() {
-		return id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getTagline() {
-		return tagline;
-	}
-
-	public void setTagline(String tagline) {
-		this.tagline = tagline;
-	}
-
-	public String getOverview() {
-		return overview;
-	}
-
-	public void setOverview(String overview) {
-		this.overview = overview;
-	}
-
-	public boolean isAdult() {
-		return adult;
-	}
-
-	public void setAdult(boolean adult) {
-		this.adult = adult;
-	}
-
-	public ContentType getContentType() {
-		return contentType;
-	}
-
-	public void setContentType(ContentType contentType) {
-		this.contentType = contentType;
-	}
-
-	public ContentRating getContentRating() {
-		return contentRating;
-	}
-
-	public void setContentRating(ContentRating contentRating) {
-		this.contentRating = contentRating;
-	}
-
-	public ContentStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(ContentStatus status) {
-		this.status = status;
-	}
-
-	public ContentVisibility getVisibility() {
-		return visibility;
-	}
-
-	public void setVisibility(ContentVisibility visibility) {
-		this.visibility = visibility;
-	}
-
-	public String getOriginalLanguage() {
-		return originalLanguage;
-	}
-
-	public void setOriginalLanguage(String originalLanguage) {
-		this.originalLanguage = originalLanguage;
-	}
-
-	public LocalDate getReleaseDate() {
-		return releaseDate;
-	}
-
-	public void setReleaseDate(LocalDate releaseDate) {
-		this.releaseDate = releaseDate;
-	}
-
-	public Integer getRuntimeMinutes() {
-		return runtimeMinutes;
-	}
-
-	public void setRuntimeMinutes(Integer runtimeMinutes) {
-		this.runtimeMinutes = runtimeMinutes;
-	}
-
-	public String getPosterPath() {
-		return posterPath;
-	}
-
-	public void setPosterPath(String posterPath) {
-		this.posterPath = posterPath;
-	}
-
-	public String getBackdropPath() {
-		return backdropPath;
-	}
-
-	public void setBackdropPath(String backdropPath) {
-		this.backdropPath = backdropPath;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Instant updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getVersion() {
-		return version;
-	}
 
 }

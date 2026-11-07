@@ -1,5 +1,6 @@
 package com.sbp.auth.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import com.sbp.auth.repository.InvitationRepository;
 import com.sbp.auth.util.EmailDomainParser;
 import com.sbp.common.logging.SbpLogger;
 
+@RequiredArgsConstructor
 @Service
 public class InvitationService {
 
@@ -23,12 +25,6 @@ public class InvitationService {
 
 	private final SbpLogger sbpLog;
 
-	public InvitationService(InvitationRepository invitationRepository,
-			IdpEmailDomainRepository idpEmailDomainRepository, SbpLogger sbpLog) {
-		this.invitationRepository = invitationRepository;
-		this.idpEmailDomainRepository = idpEmailDomainRepository;
-		this.sbpLog = sbpLog;
-	}
 
 	@Transactional(readOnly = true)
 	public InvitationCheckResult checkInvitation(String email) {

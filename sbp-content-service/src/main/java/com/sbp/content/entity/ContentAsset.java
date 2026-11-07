@@ -15,9 +15,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "content_assets")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ContentAsset {
 
 	@Id
@@ -35,33 +41,5 @@ public class ContentAsset {
 
 	@Column(name = "sort_order", nullable = false)
 	private int sortOrder;
-
-	public UUID getId() {
-		return id;
-	}
-
-	public Content getContent() {
-		return content;
-	}
-
-	public void setContent(Content content) {
-		this.content = content;
-	}
-
-	public AssetType getAssetType() {
-		return assetType;
-	}
-
-	public void setAssetType(AssetType assetType) {
-		this.assetType = assetType;
-	}
-
-	public int getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
 
 }

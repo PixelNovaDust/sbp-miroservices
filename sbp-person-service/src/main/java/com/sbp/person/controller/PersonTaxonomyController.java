@@ -1,5 +1,6 @@
 package com.sbp.person.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,14 +25,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/{personId}/taxonomies")
 public class PersonTaxonomyController {
 
 	private final PersonTaxonomyService personTaxonomyService;
 
-	public PersonTaxonomyController(PersonTaxonomyService personTaxonomyService) {
-		this.personTaxonomyService = personTaxonomyService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<EntityTaxonomyClientResponse>>> list(

@@ -1,5 +1,6 @@
 package com.sbp.person.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,14 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/{personId}/studios")
 public class PersonStudioController {
 
 	private final PersonStudioService personStudioService;
 
-	public PersonStudioController(PersonStudioService personStudioService) {
-		this.personStudioService = personStudioService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<PersonStudioResponse>>> list(

@@ -17,23 +17,27 @@ sbp-migration/
 │   ├── studio/
 │   │   └── changes/V002__studios.sql
 │   ├── content/
-│   └── reference/
-│       ├── changes/V001__taxonomies_and_social_platforms.sql
-│       └── changes/V002__entity_taxonomies.sql
+│   ├── reference/
+│   │   ├── changes/V001__taxonomies_and_social_platforms.sql
+│   │   └── changes/V002__entity_taxonomies.sql
+│   └── file/
+│       └── changes/V001__file_storage.sql
 └── src/main/java/.../SbpMigrationRunner.java
 ```
 
 Add new SQL (or YAML changesets) under the correct database folder. Never edit applied changesets; add `V002__...sql` and include it from the master changelog.
+
+Per-database schema notes: **[db/](db/)** (`AUTH-DATABASE.md`, `USER-DATABASE.md`, `PERSON-DATABASE.md`, `STUDIO-DATABASE.md`, `REFERENCE-DATABASE.md`, `CONTENT-DATABASE.md`, `FILE-DATABASE.md`).
 
 Column definitions use short end-of-line `--` comments in SQL files (stripped at runtime by Liquibase `stripComments`; for documentation only). If you must change an already-applied file, add a **new** changeset instead of editing SQL.
 
 If dev DBs already ran an older version of a file and Liquibase reports **Validation Failed: checksum**, run:
 
 ```powershell
-.\scripts\run.ps1 migrate-dev-repair
+.\scripts\run.ps1 migrate dev -Repair
 ```
 
-That sets `LIQUIBASE_CLEAR_CHECKSUMS=true` for one migration run (all databases). Do not use in production.
+That sets `SBP_CLEAR_LIQUIBASE_CHECKSUMS=true` for one migration run (all databases). Do not use in production.
 
 **Auth `V002`** adds `auth_identity_providers`, `auth_invitations`, and corporate demo `demo@example.com` → Okta.
 
@@ -53,7 +57,9 @@ That sets `LIQUIBASE_CLEAR_CHECKSUMS=true` for one migration run (all databases)
 
 **Person `V004`** partially normalizes career: `career_details`, `retired_year`, `last_active_year`, `person_career_highlights`, `person_featured_content` (content ids for future content-service enrichment), drops `persons.roles` / `persons.career` JSONB, and constrains `career_status` to `ACTIVE`, `RETIRED`, `HIATUS`, `DEBUT`.
 
-**Content `V002`** adds the catalog schema for **sbp-content-service**: `contents`, origin countries, studio/cast/taxonomy link tables (external UUIDs only), and normalized `content_assets` / `content_asset_keys`. See [CONTENT-DATABASE.md](CONTENT-DATABASE.md).
+**Content `V002`** adds the catalog schema for **sbp-content-service**: `contents`, origin countries, studio/cast/taxonomy link tables (external UUIDs only), and normalized `content_assets` / `content_asset_keys`. See [CONTENT-DATABASE.md](db/CONTENT-DATABASE.md).
+
+**File `V001`** adds **`file_storage`** (registry for S3/MinIO objects). **Studio `V004`**: `studios.logo` (UUID → file registry), `studios.svg`. **Reference `V005`**: `social_platforms.logo`, `social_platforms.svg` (copied from legacy `svg_icon` where set). **Person `V006`**: `profile_file_id`, `backdrop_file_id`. **Content `V004`**: `poster_file_id`, `backdrop_file_id`, `content_asset_keys.storage_file_id`.
 
 In Compose, **auth**, **user**, **person**, **studio**, and **content** services wait for **`sbp-migration`** (`service_completed_successfully`) before starting.
 

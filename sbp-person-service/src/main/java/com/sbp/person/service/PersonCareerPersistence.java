@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
@@ -12,13 +13,12 @@ import com.sbp.person.repository.PersonCareerHighlightRepository;
 import com.sbp.person.util.PersonCareerStatusSupport;
 
 @Component
+@RequiredArgsConstructor
+
 public class PersonCareerPersistence {
 
 	private final PersonCareerHighlightRepository careerHighlightRepository;
 
-	public PersonCareerPersistence(PersonCareerHighlightRepository careerHighlightRepository) {
-		this.careerHighlightRepository = careerHighlightRepository;
-	}
 
 	void applyCareerFields(Person entity, PersonCareerInput career, String careerStatus, Short retiredYear, Short lastActiveYear) {
 		if (careerStatus != null) {
@@ -31,8 +31,23 @@ public class PersonCareerPersistence {
 			entity.setLastActiveYear(lastActiveYear);
 		}
 		if (career != null) {
-			entity.setCareerDetails(career.details());
+			applyCareerScalars(entity, career);
 			replaceHighlights(entity, career.highlights());
+		}
+	}
+
+	void applyCareerScalars(Person entity, PersonCareerInput career) {
+		if (career == null) {
+			return;
+		}
+		if (career.details() != null) {
+			entity.setCareerDetails(career.details());
+		}
+		if (career.previousProfession() != null) {
+			entity.setPreviousProfession(career.previousProfession());
+		}
+		if (career.startYear() != null) {
+			entity.setCareerStartYear(career.startYear());
 		}
 	}
 
@@ -41,6 +56,8 @@ public class PersonCareerPersistence {
 			return;
 		}
 		careerHighlightRepository.deleteByPerson_Id(person.getId());
+		// Flush so unique (person_id, sort_order) is freed before inserts in the same transaction.
+		careerHighlightRepository.flush();
 		if (highlights.isEmpty()) {
 			return;
 		}

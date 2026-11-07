@@ -1,9 +1,11 @@
 package com.sbp.reference.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sbp.common.response.ApiResponse;
 import com.sbp.common.response.ApiResponseFactory;
@@ -26,14 +30,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/api/v1/social-platforms")
 public class SocialPlatformController {
 
 	private final SocialPlatformService socialPlatformService;
 
-	public SocialPlatformController(SocialPlatformService socialPlatformService) {
-		this.socialPlatformService = socialPlatformService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<SocialPlatformResponse>>> list(
@@ -76,6 +79,16 @@ public class SocialPlatformController {
 			HttpServletRequest request) {
 		SocialPlatformResponse data = socialPlatformService.update(id, body);
 		return ResponseEntity.ok(success("SOCIAL_PLATFORM_UPDATED", "Social platform updated", data, request));
+	}
+
+	@PostMapping(value = "/{id}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ApiResponse<SocialPlatformResponse>> uploadLogo(
+			@PathVariable UUID id,
+			@RequestPart("file") MultipartFile file,
+			@RequestParam(defaultValue = "system") String actor,
+			HttpServletRequest request) throws java.io.IOException {
+		SocialPlatformResponse data = socialPlatformService.uploadLogo(id, file, actor);
+		return ResponseEntity.ok(success("SOCIAL_PLATFORM_LOGO_UPLOADED", "Social platform logo uploaded", data, request));
 	}
 
 	@DeleteMapping("/{id}")

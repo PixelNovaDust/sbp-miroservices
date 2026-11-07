@@ -8,6 +8,9 @@ public record StudioResponse(
 		String slug,
 		String website,
 		String description,
+		UUID logo,
+		String svg,
+		String logoUrl,
 		boolean active,
 		StudioAuditResponse audit) {
 }

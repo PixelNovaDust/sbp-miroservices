@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import com.sbp.person.repository.PersonRepository;
 import com.sbp.person.spec.PersonSpecifications;
 import com.sbp.person.util.PersonCareerStatusSupport;
 
+@RequiredArgsConstructor
 @Service
 public class PersonService {
 
@@ -28,14 +30,6 @@ public class PersonService {
 
 	private final PersonCareerPersistence personCareerPersistence;
 
-	public PersonService(
-			PersonRepository personRepository,
-			ObjectMapper objectMapper,
-			PersonCareerPersistence personCareerPersistence) {
-		this.personRepository = personRepository;
-		this.objectMapper = objectMapper;
-		this.personCareerPersistence = personCareerPersistence;
-	}
 
 	@Transactional(readOnly = true)
 	public List<PersonSummaryResponse> list(String name, Boolean active, Boolean verified) {
@@ -49,6 +43,9 @@ public class PersonService {
 		Instant now = Instant.now();
 		Person entity = new Person();
 		applyCreate(entity, request, now);
+		if (request.career() != null) {
+			personCareerPersistence.applyCareerScalars(entity, request.career());
+		}
 		Person saved = personRepository.save(entity);
 		if (request.career() != null && request.career().highlights() != null) {
 			personCareerPersistence.replaceHighlights(saved, request.career().highlights());
@@ -76,10 +73,10 @@ public class PersonService {
 		entity.setCareerStatus(PersonCareerStatusSupport.normalizeOrNull(request.careerStatus()));
 		entity.setRetiredYear(request.retiredYear());
 		entity.setLastActiveYear(request.lastActiveYear());
-		entity.setProfilePath(request.profilePath());
-		entity.setBackdropPath(request.backdropPath());
+		entity.setProfileFileId(request.profileFileId());
+		entity.setBackdropFileId(request.backdropFileId());
 		if (request.career() != null) {
-			entity.setCareerDetails(request.career().details());
+			personCareerPersistence.applyCareerScalars(entity, request.career());
 			if (request.career().highlights() != null) {
 				personCareerPersistence.replaceHighlights(entity, request.career().highlights());
 			}
@@ -144,16 +141,14 @@ public class PersonService {
 		if (request.lastActiveYear() != null) {
 			entity.setLastActiveYear(request.lastActiveYear());
 		}
-		if (request.profilePath() != null) {
-			entity.setProfilePath(request.profilePath());
+		if (request.profileFileId() != null) {
+			entity.setProfileFileId(request.profileFileId());
 		}
-		if (request.backdropPath() != null) {
-			entity.setBackdropPath(request.backdropPath());
+		if (request.backdropFileId() != null) {
+			entity.setBackdropFileId(request.backdropFileId());
 		}
 		if (request.career() != null) {
-			if (request.career().details() != null) {
-				entity.setCareerDetails(request.career().details());
-			}
+			personCareerPersistence.applyCareerScalars(entity, request.career());
 			if (request.career().highlights() != null) {
 				personCareerPersistence.replaceHighlights(entity, request.career().highlights());
 			}
@@ -201,11 +196,8 @@ public class PersonService {
 		entity.setCareerStatus(PersonCareerStatusSupport.normalizeOrNull(request.careerStatus()));
 		entity.setRetiredYear(request.retiredYear());
 		entity.setLastActiveYear(request.lastActiveYear());
-		if (request.career() != null) {
-			entity.setCareerDetails(request.career().details());
-		}
-		entity.setProfilePath(request.profilePath());
-		entity.setBackdropPath(request.backdropPath());
+		entity.setProfileFileId(request.profileFileId());
+		entity.setBackdropFileId(request.backdropFileId());
 		entity.setContentType("PERSON");
 		entity.setSourceMetadata(toJsonNode(request.sourceMetadata()));
 		entity.setCreatedAt(now);

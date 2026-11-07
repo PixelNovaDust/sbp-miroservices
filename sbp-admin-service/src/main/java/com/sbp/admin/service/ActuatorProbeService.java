@@ -6,8 +6,6 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -19,10 +17,11 @@ import com.sbp.admin.dto.MonitoringDtos.InstanceHealth;
 import com.sbp.admin.dto.MonitoringStatus;
 import com.sbp.admin.util.TargetHostValidator;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ActuatorProbeService {
-
-	private static final Logger log = LoggerFactory.getLogger(ActuatorProbeService.class);
 
 	private final RestClient restClient;
 

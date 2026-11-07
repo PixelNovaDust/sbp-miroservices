@@ -11,9 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "person_career_highlights")
+@Getter
+@Setter
+@NoArgsConstructor
 public class PersonCareerHighlight {
 
 	@Id
@@ -33,41 +39,5 @@ public class PersonCareerHighlight {
 
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private Instant createdAt;
-
-	public UUID getId() {
-		return id;
-	}
-
-	public Person getPerson() {
-		return person;
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-	}
-
-	public short getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(short sortOrder) {
-		this.sortOrder = sortOrder;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
 
 }

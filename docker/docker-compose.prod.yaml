@@ -122,6 +122,24 @@ services:
       timeout: 5s
       retries: 5
 
+  file-storage-db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${FILE_STORAGE_DB_NAME}
+      POSTGRES_USER: ${FILE_STORAGE_DB_USERNAME}
+      POSTGRES_PASSWORD: ${FILE_STORAGE_DB_PASSWORD}
+      TZ: ${APP_TIMEZONE:-Asia/Kolkata}
+    ports:
+      - ${FILE_STORAGE_DB_PORT}:5432
+    volumes:
+      - sbp-file-storage-db-prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ${FILE_STORAGE_DB_USERNAME} -d ${FILE_STORAGE_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   sbp-migration:
     build:
       context: ..
@@ -129,7 +147,7 @@ services:
     restart: no
     environment:
       APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Kolkata}
-      LIQUIBASE_CLEAR_CHECKSUMS: ${LIQUIBASE_CLEAR_CHECKSUMS:-}
+      SBP_CLEAR_LIQUIBASE_CHECKSUMS: ${SBP_CLEAR_LIQUIBASE_CHECKSUMS:-}
       AUTH_DB_HOST: auth-db
       AUTH_DB_PORT: 5432
       AUTH_DB_NAME: ${AUTH_DB_NAME}
@@ -160,6 +178,11 @@ services:
       REFERENCE_DB_NAME: ${REFERENCE_DB_NAME}
       REFERENCE_DB_USERNAME: ${REFERENCE_DB_USERNAME}
       REFERENCE_DB_PASSWORD: ${REFERENCE_DB_PASSWORD}
+      FILE_STORAGE_DB_HOST: file-storage-db
+      FILE_STORAGE_DB_PORT: 5432
+      FILE_STORAGE_DB_NAME: ${FILE_STORAGE_DB_NAME}
+      FILE_STORAGE_DB_USERNAME: ${FILE_STORAGE_DB_USERNAME}
+      FILE_STORAGE_DB_PASSWORD: ${FILE_STORAGE_DB_PASSWORD}
     depends_on:
       auth-db:
         condition: service_healthy
@@ -172,6 +195,8 @@ services:
       content-db:
         condition: service_healthy
       reference-db:
+        condition: service_healthy
+      file-storage-db:
         condition: service_healthy
 
   prometheus:
@@ -347,7 +372,7 @@ services:
       MONITORING_HEALTH_CONNECT_TIMEOUT_MS: ${MONITORING_HEALTH_CONNECT_TIMEOUT_MS:-2000}
       MONITORING_HEALTH_READ_TIMEOUT_MS: ${MONITORING_HEALTH_READ_TIMEOUT_MS:-3000}
       MONITORING_CACHE_TTL_SECONDS: ${MONITORING_CACHE_TTL_SECONDS:-15}
-      MONITORING_TRUSTED_HOST_SUFFIXES: ${MONITORING_TRUSTED_HOST_SUFFIXES:-sbp-auth-service,sbp-user-service,sbp-person-service,sbp-studio-service,sbp-content-service,sbp-api-gateway,sbp-admin-service,sbp-discovery-server,auth-db,user-db,person-db,studio-db,content-db,localhost,127.0.0.1}
+      MONITORING_TRUSTED_HOST_SUFFIXES: ${MONITORING_TRUSTED_HOST_SUFFIXES:-sbp-auth-service,sbp-user-service,sbp-person-service,sbp-studio-service,sbp-content-service,sbp-reference-service,sbp-file-storage-service,sbp-api-gateway,sbp-admin-service,sbp-discovery-server,auth-db,user-db,person-db,studio-db,content-db,reference-db,file-storage-db,localhost,127.0.0.1}
     depends_on:
       - sbp-discovery-server
       - prometheus
@@ -388,3 +413,5 @@ volumes:
     name: sbp-content-db-prod-data
   sbp-reference-db-prod-data:
     name: sbp-reference-db-prod-data
+  sbp-file-storage-db-prod-data:
+    name: sbp-file-storage-db-prod-data

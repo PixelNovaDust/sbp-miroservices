@@ -11,9 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "content_asset_keys")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ContentAssetKey {
 
 	@Id
@@ -31,32 +37,7 @@ public class ContentAssetKey {
 	@Column(name = "sort_order", nullable = false)
 	private int sortOrder;
 
-	public UUID getId() {
-		return id;
-	}
-
-	public ContentAsset getAsset() {
-		return asset;
-	}
-
-	public void setAsset(ContentAsset asset) {
-		this.asset = asset;
-	}
-
-	public String getStorageKey() {
-		return storageKey;
-	}
-
-	public void setStorageKey(String storageKey) {
-		this.storageKey = storageKey;
-	}
-
-	public int getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+	@Column(name = "storage_file_id")
+	private UUID storageFileId;
 
 }

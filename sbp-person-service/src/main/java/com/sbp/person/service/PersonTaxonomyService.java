@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,16 +12,14 @@ import com.sbp.person.client.dto.EntityTaxonomyClientResponse;
 import com.sbp.person.dto.PersonTaxonomyAssignRequest;
 
 @Service
+@RequiredArgsConstructor
+
 public class PersonTaxonomyService {
 
 	private final PersonSupportService personSupportService;
 
 	private final ReferenceServiceClient referenceServiceClient;
 
-	public PersonTaxonomyService(PersonSupportService personSupportService, ReferenceServiceClient referenceServiceClient) {
-		this.personSupportService = personSupportService;
-		this.referenceServiceClient = referenceServiceClient;
-	}
 
 	@Transactional(readOnly = true)
 	public List<EntityTaxonomyClientResponse> list(UUID personId) {

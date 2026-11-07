@@ -7,6 +7,7 @@ public record SocialPlatformUpdateRequest(
 		@Size(max = 100) String name,
 		@Size(max = 100) String slug,
 		@Size(max = 255) String baseUrl,
+		String svg,
 		String svgIcon,
 		@Size(max = 20) String brandColor,
 		Boolean active,

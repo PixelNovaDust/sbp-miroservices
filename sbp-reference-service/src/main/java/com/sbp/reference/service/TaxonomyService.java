@@ -1,5 +1,6 @@
 package com.sbp.reference.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -19,15 +20,13 @@ import com.sbp.reference.repository.TaxonomyTypeRepository;
 import com.sbp.reference.spec.ReferenceSpecifications;
 
 @Service
+@RequiredArgsConstructor
+
 public class TaxonomyService {
 
 	private final TaxonomyRepository taxonomyRepository;
 	private final TaxonomyTypeRepository taxonomyTypeRepository;
 
-	public TaxonomyService(TaxonomyRepository taxonomyRepository, TaxonomyTypeRepository taxonomyTypeRepository) {
-		this.taxonomyRepository = taxonomyRepository;
-		this.taxonomyTypeRepository = taxonomyTypeRepository;
-	}
 
 	@Transactional(readOnly = true)
 	public List<TaxonomyResponse> list(String type, String name, Boolean active) {

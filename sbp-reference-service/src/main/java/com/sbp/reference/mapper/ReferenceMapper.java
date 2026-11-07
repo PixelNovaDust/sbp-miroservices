@@ -27,13 +27,17 @@ public final class ReferenceMapper {
 				entity.getVersion());
 	}
 
-	public static SocialPlatformResponse toSocialPlatformResponse(SocialPlatform entity) {
+	public static SocialPlatformResponse toSocialPlatformResponse(SocialPlatform entity, String logoUrl) {
+		String svg = entity.getSvg() != null ? entity.getSvg() : entity.getSvgIcon();
 		return new SocialPlatformResponse(
 				entity.getId(),
 				entity.getName(),
 				entity.getSlug(),
 				entity.getBaseUrl(),
-				entity.getSvgIcon(),
+				entity.getLogo(),
+				svg,
+				svg,
+				logoUrl,
 				entity.getBrandColor(),
 				entity.isActive(),
 				entity.getCreatedAt(),

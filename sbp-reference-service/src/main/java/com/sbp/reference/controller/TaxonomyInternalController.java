@@ -1,5 +1,6 @@
 package com.sbp.reference.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -18,14 +19,13 @@ import com.sbp.reference.service.TaxonomyService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/internal/v1/taxonomies")
 public class TaxonomyInternalController {
 
 	private final TaxonomyService taxonomyService;
 
-	public TaxonomyInternalController(TaxonomyService taxonomyService) {
-		this.taxonomyService = taxonomyService;
-	}
 
 	@GetMapping("/batch")
 	public ResponseEntity<ApiResponse<List<TaxonomyResponse>>> batch(

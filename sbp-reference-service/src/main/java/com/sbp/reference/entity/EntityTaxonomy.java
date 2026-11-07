@@ -12,9 +12,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "entity_taxonomies")
+@Getter
+@Setter
+@NoArgsConstructor
 public class EntityTaxonomy {
 
 	@Id
@@ -34,41 +40,5 @@ public class EntityTaxonomy {
 
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private Instant createdAt;
-
-	public UUID getId() {
-		return id;
-	}
-
-	public UUID getEntityId() {
-		return entityId;
-	}
-
-	public void setEntityId(UUID entityId) {
-		this.entityId = entityId;
-	}
-
-	public String getEntityType() {
-		return entityType;
-	}
-
-	public void setEntityType(String entityType) {
-		this.entityType = entityType;
-	}
-
-	public Taxonomy getTaxonomy() {
-		return taxonomy;
-	}
-
-	public void setTaxonomy(Taxonomy taxonomy) {
-		this.taxonomy = taxonomy;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
 
 }

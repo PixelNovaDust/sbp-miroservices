@@ -1,9 +1,11 @@
 package com.sbp.content.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sbp.common.response.ApiResponse;
 import com.sbp.common.response.ApiResponseFactory;
@@ -25,11 +29,13 @@ import com.sbp.content.dto.ContentSummaryResponse;
 import com.sbp.content.dto.ContentWriteRequest;
 import com.sbp.content.entity.Content;
 import com.sbp.content.service.ContentAggregateService;
+import com.sbp.content.service.ContentMediaService;
 import com.sbp.content.service.ContentService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping
 public class ContentController {
@@ -38,10 +44,8 @@ public class ContentController {
 
 	private final ContentAggregateService contentAggregateService;
 
-	public ContentController(ContentService contentService, ContentAggregateService contentAggregateService) {
-		this.contentService = contentService;
-		this.contentAggregateService = contentAggregateService;
-	}
+	private final ContentMediaService contentMediaService;
+
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<ContentSummaryResponse>>> list(
@@ -80,6 +84,28 @@ public class ContentController {
 		contentService.update(id, body);
 		ContentDetailResponse data = contentAggregateService.getDetail(id);
 		return ResponseEntity.ok(success("CONTENT_UPDATED", "Content updated", data, request));
+	}
+
+	@PostMapping(value = "/{id}/poster", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ApiResponse<ContentDetailResponse>> uploadPoster(
+			@PathVariable UUID id,
+			@RequestPart("file") MultipartFile file,
+			@RequestParam(defaultValue = "system") String actor,
+			HttpServletRequest request) throws java.io.IOException {
+		contentMediaService.uploadPoster(id, file, actor);
+		ContentDetailResponse data = contentAggregateService.getDetail(id);
+		return ResponseEntity.ok(success("CONTENT_POSTER_UPLOADED", "Poster uploaded", data, request));
+	}
+
+	@PostMapping(value = "/{id}/backdrop", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ApiResponse<ContentDetailResponse>> uploadBackdrop(
+			@PathVariable UUID id,
+			@RequestPart("file") MultipartFile file,
+			@RequestParam(defaultValue = "system") String actor,
+			HttpServletRequest request) throws java.io.IOException {
+		contentMediaService.uploadBackdrop(id, file, actor);
+		ContentDetailResponse data = contentAggregateService.getDetail(id);
+		return ResponseEntity.ok(success("CONTENT_BACKDROP_UPLOADED", "Backdrop uploaded", data, request));
 	}
 
 	@DeleteMapping("/{id}")

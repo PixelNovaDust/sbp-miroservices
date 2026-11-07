@@ -1,5 +1,6 @@
 package com.sbp.admin.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,6 +30,7 @@ import com.sbp.admin.dto.MonitoringDtos.ServicesResponse;
 import com.sbp.admin.dto.MonitoringDtos.Summary;
 import com.sbp.admin.dto.MonitoringStatus;
 
+@RequiredArgsConstructor
 @Service
 public class MonitoringService {
 
@@ -46,18 +48,6 @@ public class MonitoringService {
 
 	private final MonitoringProperties properties;
 
-	public MonitoringService(DiscoveryClient discoveryClient, ActuatorProbeService actuatorProbeService,
-			PrometheusQueryService prometheusQueryService, InfrastructureHealthService infrastructureHealthService,
-			MonitoringEventTracker eventTracker, MonitoringStatusCalculator statusCalculator,
-			MonitoringProperties properties) {
-		this.discoveryClient = discoveryClient;
-		this.actuatorProbeService = actuatorProbeService;
-		this.prometheusQueryService = prometheusQueryService;
-		this.infrastructureHealthService = infrastructureHealthService;
-		this.eventTracker = eventTracker;
-		this.statusCalculator = statusCalculator;
-		this.properties = properties;
-	}
 
 	@Cacheable("monitoringSnapshot")
 	public RegistrySnapshot snapshot() {

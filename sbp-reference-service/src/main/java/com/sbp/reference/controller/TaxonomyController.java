@@ -1,5 +1,6 @@
 package com.sbp.reference.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,14 +27,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+
 @RequestMapping("/api/v1/taxonomies")
 public class TaxonomyController {
 
 	private final TaxonomyService taxonomyService;
 
-	public TaxonomyController(TaxonomyService taxonomyService) {
-		this.taxonomyService = taxonomyService;
-	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<TaxonomyResponse>>> list(

@@ -24,7 +24,7 @@ The **Spring Boot Dashboard** lists runnable apps that the **Java extension** ha
    Run task **Maven: install sbp-lib-common** or:
 
    ```powershell
-   .\scripts\run.ps1 install-lib
+   .\scripts\run.ps1 lib
    ```
 
    Then task **Maven: compile sbp-reference-service**.

@@ -1,5 +1,6 @@
 package com.sbp.person.service;
 
+import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -15,16 +16,14 @@ import com.sbp.person.exception.ResourceNotFoundException;
 import com.sbp.person.repository.PersonAliasRepository;
 
 @Service
+@RequiredArgsConstructor
+
 public class PersonAliasService {
 
 	private final PersonSupportService personSupportService;
 
 	private final PersonAliasRepository personAliasRepository;
 
-	public PersonAliasService(PersonSupportService personSupportService, PersonAliasRepository personAliasRepository) {
-		this.personSupportService = personSupportService;
-		this.personAliasRepository = personAliasRepository;
-	}
 
 	@Transactional(readOnly = true)
 	public List<PersonAliasResponse> list(UUID personId) {

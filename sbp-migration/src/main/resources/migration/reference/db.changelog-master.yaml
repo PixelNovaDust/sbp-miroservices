@@ -35,3 +35,12 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: false
             stripComments: true
+  - changeSet:
+      id: reference-005-social-platform-logo-svg
+      author: sbp
+      changes:
+        - sqlFile:
+            path: changes/V005__social_platform_logo_svg.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

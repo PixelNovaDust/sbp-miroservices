@@ -1,5 +1,6 @@
 package com.sbp.auth.controller;
 
+import lombok.RequiredArgsConstructor;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,12 @@ import com.sbp.common.response.ApiResponseFactory;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@RequiredArgsConstructor
+
 public class HealthController {
 
 	private final SbpLogger sbpLog;
 
-	public HealthController(SbpLogger sbpLog) {
-		this.sbpLog = sbpLog;
-	}
 
 	@GetMapping("/health")
 	public ResponseEntity<ApiResponse<Map<String, String>>> health(HttpServletRequest request) {
